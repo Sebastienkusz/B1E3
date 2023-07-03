@@ -9,10 +9,17 @@ locals {
   network_base = "10.1.0.0/16"
   network_name = "vn"
   subnets = {
-    "sr1" = "10.1.0.0/24"
+    "sr1"     = "10.1.0.0/24"
     "sr2"     = "10.1.1.0/24"
-    "gateway"      = "10.1.2.0/24"
+    "gateway" = "10.1.2.0/24"
   }
+}
+
+# VM Bastion
+locals {
+    nsg_bastion_name = "nsg-bastion"
+    nsg_bastion_rule_ipfilter = "82.126.234.200"
+    nsg_bastion_rule_sshport = "10022"
 }
 
 locals {
