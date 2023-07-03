@@ -18,4 +18,4 @@
 - 1 **Log analytics**
   
 ## Topologie
-![topologie](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/d8852009-d24a-43ee-b1a3-8a7b51fc7900)
+![topologie infrastructure](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/2545d086-35ec-44cc-a23c-3b4083791c2e)
