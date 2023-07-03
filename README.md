@@ -16,6 +16,6 @@
 - 1 **conteneur** de stockage blob 
 - 1 **Azure monitor** (b1e3-gr2-monitor) 
 - 1 **Log analytics**
--  
+  
 ## Topologie
 ![topologie](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/d8852009-d24a-43ee-b1a3-8a7b51fc7900)
