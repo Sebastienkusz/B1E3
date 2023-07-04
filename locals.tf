@@ -27,7 +27,7 @@ locals {
   vm_bastion_size              = "Standard_B2s"
 }
 
-# VM Appli
+# VM wiki-js
 locals {
   appli_name                 = "wiki-js"
   public_ip_appli_version    = "IPv4"
@@ -37,6 +37,13 @@ locals {
   vm_appli_size              = "Standard_D2s_v3"
 }
 
+#bdd
+locals {
+  server_name            = "${local.resource_group_name}-serverdb"
+  bdd_name               = "mariadb"
+  nsg_name               = "mariadb_rule"
+  nsg_bdd_rule_mysqlport = "3306"
+}
 
 locals {
   tags = {
