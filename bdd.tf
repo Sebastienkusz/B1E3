@@ -1,8 +1,10 @@
-resource "azurerm_mariadb_server" "server" {
-  name                = "${local.resource_group_name}-server-${local.bdd_name}"
-  location            = local.location
-  resource_group_name = local.resource_group_name
-  sku_name = "B_Gen5_2"
+
+
+resource "azurerm_mariadb_server" "serverdb" {
+  name                         = local.server_name
+  location                     = local.location
+  resource_group_name          = local.resource_group_name
+  sku_name                     = "B_Gen5_2"
   storage_mb                   = 51200
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
@@ -13,9 +15,9 @@ resource "azurerm_mariadb_server" "server" {
 }
 
 resource "azurerm_mariadb_database" "database" {
-  name                = "${local.resource_group_name}-database-${local.bdd_name}"
+  name                = local.bdd_name
   resource_group_name = local.resource_group_name
-  server_name         = "${local.resource_group_name}-server-${local.bdd_name}"
+  server_name         = azurerm_mariadb_server.serverdb.name
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_520_ci"
 }
@@ -34,13 +36,14 @@ resource "azurerm_network_security_rule" "mariadb_rule" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = local.nsg_bdd_rule_mysqlport
-  source_address_prefix       = "Internet"
-  destination_address_prefix  = azurerm_mariadb_server.server.fully_qualified_domain_name
+  source_address_prefix       = "10.1.0.0/24"
+  destination_address_prefix  = "10.1.1.0/24"
   resource_group_name         = local.resource_group_name
   network_security_group_name = "${local.resource_group_name}-nsg-${local.bdd_name}"
 }
 
-resource "azurerm_subnet_nsg_association" "link" {
+resource "azurerm_subnet_network_security_group_association" "link" {
   subnet_id                 = azurerm_subnet.Subnet["sr2"].id
-  network_security_group_id = azurerm_network_security_group.mariadb_rule.id
+  network_security_group_id = azurerm_network_security_group.nsg_mariadb.id
 }
+

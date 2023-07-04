@@ -67,10 +67,12 @@ resource "azurerm_linux_virtual_machine" "VM_Bastion" {
     username   = local.admin
     public_key = file("${abspath(path.root)}/ssh_keys/sebastien.pub")
   }
-    admin_ssh_key {
+
+  admin_ssh_key {
     username   = local.admin
     public_key = file("${abspath(path.root)}/ssh_keys/johann.pub")
   }
+
   os_disk {
     name                 = "${local.resource_group_name}-os_disk-${local.bastion_name}"
     caching              = "ReadWrite"

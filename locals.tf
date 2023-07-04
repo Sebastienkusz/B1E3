@@ -39,10 +39,11 @@ locals {
 
 #bdd
 locals {
-  bdd_name = "mariadb"
-  nsg_name = "mariadb_rule
+  server_name            = "${local.resource_group_name}-serverdb"
+  bdd_name               = "mariadb"
+  nsg_name               = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
-} 
+}
 
 locals {
   tags = {
