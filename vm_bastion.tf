@@ -32,57 +32,56 @@ resource "azurerm_public_ip" "Public_IP_Bastion" {
   tags                = local.tags
 }
 
-# NIC
-resource "azurerm_network_interface" "Nic" {
-  name                = "${local.resource_group_name}-nic"
+# NIC - Bastion
+resource "azurerm_network_interface" "Nic_Bastion" {
+  name                = "${local.resource_group_name}-nic-${local.bastion_name}"
   location            = local.location
   resource_group_name = local.resource_group_name
 
   ip_configuration {
-    name                          = "${local.resource_group_name}-nic-private_ip"
+    name                          = "${local.resource_group_name}-nic-${local.bastion_name}-private_ip"
     subnet_id                     = azurerm_subnet.Subnet["sr1"].id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.Public_IP_Bastion.id
   }
 }
 
+# Association NIC - NSG - Bastion
+resource "azurerm_network_interface_security_group_association" "Bastion" {
+  network_interface_id      = azurerm_network_interface.Nic_Bastion.id
+  network_security_group_id = azurerm_network_security_group.NSG_Bastion.id
+}
+
 # VM - Bastion
-resource "azurerm_virtual_machine" "VM_Bastion" {
-  name                  = "${local.resource_group_name}-vm-${local.bastion_name}"
-  location              = local.location
-  resource_group_name   = local.resource_group_name
-  network_interface_ids = [azurerm_network_interface.Nic.id]
-  vm_size               = local.vm_bastion_size
+resource "azurerm_linux_virtual_machine" "VM_Bastion" {
+  name                            = "${local.resource_group_name}-vm-${local.bastion_name}"
+  location                        = local.location
+  resource_group_name             = local.resource_group_name
+  network_interface_ids           = [azurerm_network_interface.Nic_Bastion.id]
+  size                            = local.vm_bastion_size
+  admin_username                  = local.admin
+  computer_name                   = local.bastion_name
+  disable_password_authentication = true
 
-  # Uncomment this line to delete the OS disk automatically when deleting the VM
-  delete_os_disk_on_termination = true
-
-  # Uncomment this line to delete the data disks automatically when deleting the VM
-  # delete_data_disks_on_termination = true
-
-  storage_image_reference {
+  admin_ssh_key {
+    username   = local.admin
+    public_key = file("${abspath(path.root)}/ssh_keys/sebastien.pub")
+  }
+    admin_ssh_key {
+    username   = local.admin
+    public_key = file("${abspath(path.root)}/ssh_keys/johann.pub")
+  }
+  os_disk {
+    name                 = "${local.resource_group_name}-os_disk-${local.bastion_name}"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+    disk_size_gb         = "30"
+  }
+  source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts-gen2"
     version   = "latest"
-  }
-  storage_os_disk {
-    name              = "${local.resource_group_name}-os_disk-${local.bastion_name}"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-    disk_size_gb      = "30"
-  }
-  os_profile {
-    computer_name  = local.bastion_name
-    admin_username = local.admin
-  }
-  os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_keys {
-      key_data = file("~/.ssh/sebastien_rsa.pub")
-      path     = "/home/${local.admin}/.ssh/authorized_keys"
-    }
-
   }
   tags = local.tags
 }
