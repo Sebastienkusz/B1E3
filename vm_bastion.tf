@@ -67,7 +67,7 @@ resource "azurerm_linux_virtual_machine" "VM_Bastion" {
     username   = local.admin
     public_key = file("${abspath(path.root)}/ssh_keys/sebastien.pub")
   }
-    admin_ssh_key {
+  admin_ssh_key {
     username   = local.admin
     public_key = file("${abspath(path.root)}/ssh_keys/johann.pub")
   }
