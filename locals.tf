@@ -19,7 +19,7 @@ locals {
 locals {
   bastion_name                 = "bastion"
   nsg_bastion_rule_ipfilter    = "82.126.234.200" # IP Box 
-  nsg_bastion_rule_sshport     = "10022"
+  nsg_bastion_rule_sshport     = "22"
   public_ip_bastion_version    = "IPv4"
   public_ip_bastion_dns_name   = "${local.resource_group_name}-${local.bastion_name}"
   public_ip_bastion_sku        = "Standard" # Basic or Standard
@@ -27,14 +27,14 @@ locals {
   vm_bastion_size              = "Standard_B2s"
 }
 
-# VM Bastion
+# VM Appli
 locals {
   appli_name                 = "wiki-js"
   public_ip_appli_version    = "IPv4"
   public_ip_appli_dns_name   = "${local.resource_group_name}-${local.appli_name}"
   public_ip_appli_sku        = "Standard" # Basic or Standard
   public_ip_appli_allocation = "Static"   # Static or Dynamic
-  vm_appli_size              = "Standard_B2s"
+  vm_appli_size              = "Standard_D2s_v3"
 }
 
 
