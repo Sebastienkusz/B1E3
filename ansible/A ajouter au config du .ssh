@@ -3,11 +3,11 @@ Host bastion
         Hostname b1e3-gr2-bastion.westeurope.cloudapp.azure.com
         User azureuser
         Port 22
-        IdentityFile ~/.ssh/sebastien_rsa
+        IdentityFile ~/.ssh/sebastien_rsa       # Fichier à changer
         ForwardAgent yes
 
 Host appli
-        Hostname 10.1.0.4
+        Hostname 10.1.0.4                       # Adresse à vérifier
         User azureuser
         Port 22
         ProxyJump bastion
