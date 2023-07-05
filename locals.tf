@@ -1,10 +1,13 @@
+# Subscription and admin name
 locals {
   subscription_id     = "c56aea2c-50de-4adc-9673-6a8008892c21"
   admin               = "azureuser"
   resource_group_name = "b1e3-gr2"
+  dns_prefix          = "b1e3-gr2"
   location            = data.azurerm_resource_group.current.location
 }
 
+# Network
 locals {
   network_base = "10.1.0.0/16"
   network_name = "vn"
@@ -21,7 +24,7 @@ locals {
   nsg_bastion_rule_ipfilter    = "82.126.234.200" # IP Box 
   nsg_bastion_rule_sshport     = "22"
   public_ip_bastion_version    = "IPv4"
-  public_ip_bastion_dns_name   = "${local.resource_group_name}-${local.bastion_name}"
+  public_ip_bastion_dns_name   = "${local.dns_prefix}-${local.bastion_name}"
   public_ip_bastion_sku        = "Standard" # Basic or Standard
   public_ip_bastion_allocation = "Static"   # Static or Dynamic
   vm_bastion_size              = "Standard_B2s"
@@ -31,7 +34,7 @@ locals {
 locals {
   appli_name                 = "wiki-js"
   public_ip_appli_version    = "IPv4"
-  public_ip_appli_dns_name   = "${local.resource_group_name}-${local.appli_name}"
+  public_ip_appli_dns_name   = "${local.dns_prefix}-${local.appli_name}"
   public_ip_appli_sku        = "Standard" # Basic or Standard
   public_ip_appli_allocation = "Static"   # Static or Dynamic
   vm_appli_size              = "Standard_D2s_v3"
