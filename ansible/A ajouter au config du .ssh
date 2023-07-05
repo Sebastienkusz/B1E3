@@ -1,6 +1,6 @@
 # B1E3
 Host bastion
-        Hostname sebastienk-bastion.westeurope.cloudapp.azure.com
+        Hostname b1e3-gr2-bastion.westeurope.cloudapp.azure.com
         User azureuser
         Port 22
         IdentityFile ~/.ssh/sebastien_rsa

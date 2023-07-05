@@ -1,11 +1,13 @@
+# Subscription and admin name
 locals {
   subscription_id     = "c56aea2c-50de-4adc-9673-6a8008892c21"
   admin               = "azureuser"
   resource_group_name = "b1e3-gr2"
-  dns_prefix          = "johann_l"
+  dns_prefix          = "b1e3-gr2"
   location            = data.azurerm_resource_group.current.location
 }
 
+# Network
 locals {
   network_base = "10.1.0.0/16"
   network_name = "vn"
