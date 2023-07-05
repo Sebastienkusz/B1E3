@@ -2,8 +2,8 @@
 locals {
   subscription_id     = "c56aea2c-50de-4adc-9673-6a8008892c21"
   admin               = "azureuser"
-  resource_group_name = "b1e3-gr2" # "Sebastien_K" # 
-  dns_prefix          = "b1e3-gr2" # "sebastienk" # 
+  resource_group_name = "b1e3-gr2" # "Sebastien_K" #   
+  dns_prefix          = "b1e3-gr2" # "sebastienk" #   
   location            = data.azurerm_resource_group.current.location
 }
 
