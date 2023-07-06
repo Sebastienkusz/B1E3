@@ -10,7 +10,7 @@ locals {
 # Network
 locals {
   network_base = "10.1.0.0/16"
-  network_name = "vn"
+  network_name = "vnet"
   subnets = {
     "sr1"     = "10.1.0.0/24"
     "sr2"     = "10.1.1.0/24"
@@ -40,12 +40,20 @@ locals {
   vm_appli_size              = "Standard_D2s_v3"
 }
 
-#bdd
+# bdd
 locals {
-  server_name            = "${local.resource_group_name}-serverdb"
-  bdd_name               = "mariadb"
-  nsg_name               = "mariadb_rule"
+  server_name            = "mariaserverdb-2"
+  database_name          = "b1e3gr2mariadb"
+  nsg_name               = "mariadb-2"
+  nsg_rule_name          = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
+}
+
+# Storage account
+locals {
+  storage_account_name = "b1e3gr2wikistorage"
+  share_directory_name = "wikispace"
+  share_name           = "wikishare"
 }
 
 locals {
