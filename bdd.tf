@@ -40,7 +40,7 @@ resource "azurerm_network_security_rule" "mariadb_rule" {
   destination_address_prefix  = "10.1.1.0/24"
   resource_group_name         = local.resource_group_name
   network_security_group_name = "${local.resource_group_name}-nsg-${local.nsg_name}"
-  subnet_id = azurerm_subnet.example.id
+ 
 }
 
 
