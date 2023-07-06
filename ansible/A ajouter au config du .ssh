@@ -1,4 +1,6 @@
 # B1E3
+# à ajouter dans ~/.ssh/config
+
 Host bastion
         Hostname b1e3-gr2-bastion.westeurope.cloudapp.azure.com
         User azureuser

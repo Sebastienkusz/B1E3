@@ -1,6 +1,6 @@
 # Virtual Network
 resource "azurerm_virtual_network" "VNet" {
-  name                = local.network_name
+  name                = "${local.resource_group_name}-${local.network_name}"
   address_space       = [local.network_base]
   location            = local.location
   resource_group_name = local.resource_group_name
@@ -10,7 +10,7 @@ resource "azurerm_virtual_network" "VNet" {
 # Subnets 
 resource "azurerm_subnet" "Subnet" {
   for_each             = local.subnets
-  name                 = each.key
+  name                 = "${local.resource_group_name}-${each.key}"
   resource_group_name  = local.resource_group_name
   virtual_network_name = azurerm_virtual_network.VNet.name
   address_prefixes     = [each.value]

@@ -1,7 +1,7 @@
 
 
 resource "azurerm_mariadb_server" "serverdb" {
-  name                         = local.server_name
+  name                         = "${local.resource_group_name}-${local.server_name}"
   location                     = local.location
   resource_group_name          = local.resource_group_name
   sku_name                     = "B_Gen5_2"
@@ -15,7 +15,7 @@ resource "azurerm_mariadb_server" "serverdb" {
 }
 
 resource "azurerm_mariadb_database" "database" {
-  name                = local.bdd_name
+  name                = local.database_name
   resource_group_name = local.resource_group_name
   server_name         = azurerm_mariadb_server.serverdb.name
   charset             = "utf8mb4"
@@ -23,13 +23,13 @@ resource "azurerm_mariadb_database" "database" {
 }
 
 resource "azurerm_network_security_group" "nsg_mariadb" {
-  name                = "${local.resource_group_name}-nsg-${local.bdd_name}"
+  name                = "${local.resource_group_name}-nsg-${local.nsg_name}"
   location            = local.location
   resource_group_name = local.resource_group_name
 }
 
 resource "azurerm_network_security_rule" "mariadb_rule" {
-  name                        = local.nsg_name
+  name                        = "${local.resource_group_name}-${local.nsg_rule_name}"
   priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
@@ -39,11 +39,13 @@ resource "azurerm_network_security_rule" "mariadb_rule" {
   source_address_prefix       = "10.1.0.0/24"
   destination_address_prefix  = "10.1.1.0/24"
   resource_group_name         = local.resource_group_name
-  network_security_group_name = "${local.resource_group_name}-nsg-${local.bdd_name}"
+  network_security_group_name = "${local.resource_group_name}-nsg-${local.nsg_name}"
+ 
 }
 
-resource "azurerm_subnet_network_security_group_association" "link" {
-  subnet_id                 = azurerm_subnet.Subnet["sr2"].id
-  network_security_group_id = azurerm_network_security_group.nsg_mariadb.id
-}
+
+#resource "azurerm_subnet_network_security_group_association" "link" {
+# subnet_id                 = azurerm_subnet.Subnet["sr1"].id
+#  network_security_group_id = azurerm_network_security_group.nsg_mariadb.id
+#}
 
