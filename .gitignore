@@ -6,5 +6,8 @@
 *.tfstate
 *.tfstate.*
 
+# invetaire d'ansible
+./ansible/inventaire.ini
+
 # others files
 *.save
