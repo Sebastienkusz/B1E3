@@ -22,6 +22,13 @@ resource "azurerm_mariadb_database" "database" {
   collation           = "utf8mb4_unicode_520_ci"
 }
 
+resource "azurerm_mariadb_virtual_network_rule" "example" {
+  name                = "mariadb-vnet-rule"
+  resource_group_name = local.resource_group_name
+  server_name         = azurerm_mariadb_server.serverdb.name
+  subnet_id           = azurerm_subnet.Subnet["sr2"].id
+}
+
 resource "azurerm_network_security_group" "nsg_mariadb" {
   name                = "${local.resource_group_name}-nsg-${local.nsg_name}"
   location            = local.location
@@ -36,13 +43,20 @@ resource "azurerm_network_security_rule" "mariadb_rule" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = local.nsg_bdd_rule_mysqlport
-  source_address_prefix       = "10.1.0.0/24"
-  destination_address_prefix  = "10.1.1.0/24"
+  source_address_prefix       = azurerm_subnet.Subnet["sr1"]
+  destination_address_prefix  = azurerm_subnet.Subnet["sr2"]
   resource_group_name         = local.resource_group_name
   network_security_group_name = "${local.resource_group_name}-nsg-${local.nsg_name}"
  
 }
 
+resource "azurerm_mariadb_firewall_rule" "firewall" {
+  name                = "firewall-rule"
+  resource_group_name = local.resource_group_name
+  server_name         = "${local.resource_group_name}-${local.server_name}"
+  start_ip_address    = azurerm_network_interface.Nic_Appli.private_ip_address
+  end_ip_address      = azurerm_network_interface.Nic_Appli.private_ip_address
+}
 
 #resource "azurerm_subnet_network_security_group_association" "link" {
 # subnet_id                 = azurerm_subnet.Subnet["sr1"].id
