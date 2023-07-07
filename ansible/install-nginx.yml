@@ -1,0 +1,6 @@
+---
+
+- name: "Installation Nginx"
+  hosts: appli
+  roles:
+    - role: "nginx"
