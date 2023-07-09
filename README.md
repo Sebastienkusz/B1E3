@@ -1,10 +1,30 @@
 # b1e3-gr2
 ## Introduction
 
-Se placer dans le dossier ansible 
+NOTE : Le lancement du terraform installe dos2unix qui permet de formater les scripts générés.
 
+### 1- Lancer le terraform depuis le dossier de base.
+
+Option possible :
+    Ajout de configuration dans le ~/.ssh/config
+    pour avoir des raccourcis vers les VM
+        ssh bastion 
+        ssh appli
+    pour cela, il suffit de lancer la commande
+        ./scripts/add_ssh_config.sh -u toto -f ssh_key
+        u étant le user
+        f le nom de fichier de la clé ssh privée correspondant à la clé se trouvant dans le dossier ssh_keys
+
+### 2- Se placer dans le dossier ansible 
+cd ansible
+installer ansible si ce n'est pas fait :
+vérifier la version de python puis 
+    pip install ansible
+
+Ajout des utilisateurs sur les 2 VM
 ```$> ansible-playbook add-users.yml -i inventaire.ini```
-
+Installation de node.js sur la VM appli
+```$> ansible-playbook install-nodejs.yml -i inventaire.ini```
 
 
 ## Liste des ressources
