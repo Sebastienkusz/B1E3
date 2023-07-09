@@ -21,7 +21,7 @@ resource "local_file" "update_gitignore" {
 EOT
 
   provisioner "local-exec" {
-    command = "sh ./scripts/script_init.sh && sh ./scripts/update_gitignore.sh"
+    command = "./scripts/script_init.sh && ./scripts/update_gitignore.sh"
     interpreter = ["/bin/bash", "-x"]
   }
 }
