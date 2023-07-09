@@ -1,6 +1,5 @@
 # B1E3
-# à ajouter dans ~/.ssh/config
-
+# ------------------------------------------------------------------
 Host bastion
         Hostname b1e3-gr2-bastion.westeurope.cloudapp.azure.com
         User azureuser
@@ -13,3 +12,4 @@ Host appli
         User azureuser
         Port 22
         ProxyJump bastion
+# ------------------------------------------------------------------

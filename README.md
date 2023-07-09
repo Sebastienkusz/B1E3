@@ -1,6 +1,12 @@
 # b1e3-gr2
 ## Introduction
 
+Se placer dans le dossier ansible 
+
+```$> ansible-playbook add-users.yml -i inventaire.ini```
+
+
+
 ## Liste des ressources
 - 1 **clé ssh** créé aléatoirement + Clés admins supplémentaires (Johann et Seb) 
 - 1 **réseau virtuel** (b1e3-gr2-vn)
