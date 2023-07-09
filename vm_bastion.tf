@@ -91,4 +91,8 @@ resource "azurerm_linux_virtual_machine" "VM_Bastion" {
     version   = "latest"
   }
   tags = local.tags
+
+  depends_on = [
+    local_file.admin_rsa_file
+  ]
 }

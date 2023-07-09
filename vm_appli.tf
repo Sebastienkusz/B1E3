@@ -80,13 +80,18 @@ resource "azurerm_linux_virtual_machine" "VM_Appli" {
 
   admin_ssh_key {
     username   = local.admin
-    public_key = file("${abspath(path.root)}/ssh_keys/sebastien.pub")
+    public_key = tls_private_key.admin_rsa.public_key_openssh
   }
 
-  admin_ssh_key {
-    username   = local.admin
-    public_key = file("${abspath(path.root)}/ssh_keys/johann.pub")
-  }
+  # admin_ssh_key {
+  #   username   = local.admin
+  #   public_key = file("${abspath(path.root)}/ssh_keys/sebastien.pub")
+  # }
+
+  # admin_ssh_key {
+  #   username   = local.admin
+  #   public_key = file("${abspath(path.root)}/ssh_keys/johann.pub")
+  # }
 
   os_disk {
     name                 = "${local.resource_group_name}-os_disk-${local.appli_name}"
@@ -101,4 +106,8 @@ resource "azurerm_linux_virtual_machine" "VM_Appli" {
     version   = "latest"
   }
   tags = local.tags
+
+  depends_on = [
+    local_file.admin_rsa_file
+  ]
 }

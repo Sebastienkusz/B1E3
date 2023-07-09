@@ -9,5 +9,8 @@
 # invetaire d'ansible
 ./ansible/inventaire.ini
 
+# Admin ssh key
+./ssh_keys/admin*
+
 # others files
 *.save

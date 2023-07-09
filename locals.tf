@@ -2,8 +2,8 @@
 locals {
   subscription_id     = "c56aea2c-50de-4adc-9673-6a8008892c21"
   admin               = "azureuser"
-  resource_group_name = "b1e3-gr2"    
-  dns_prefix          = "b1e3-gr2"  
+  resource_group_name = "b1e3-gr2"
+  dns_prefix          = "b1e3-gr2"
   location            = data.azurerm_resource_group.current.location
 }
 
@@ -42,7 +42,7 @@ locals {
 
 # bdd
 locals {
-  server_name            = "mariaserverdb-2"
+  server_name            = "mariaserverdb"
   database_name          = "b1e3gr2mariadb"
   nsg_name               = "mariadb-2"
   nsg_rule_name          = "mariadb_rule"
