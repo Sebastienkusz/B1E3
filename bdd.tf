@@ -36,10 +36,6 @@ resource "azurerm_network_security_group" "nsg_mariadb" {
   resource_group_name = local.resource_group_name
 }
 
-# data "http" "myip" {
-#   url = "http://ipv4.icanhazip.com"
-# }
-
 resource "azurerm_network_security_rule" "mariadb_rule" {
   name                        = "${local.resource_group_name}-${local.nsg_rule_name}"
   priority                    = 100

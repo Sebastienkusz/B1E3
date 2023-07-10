@@ -12,6 +12,7 @@
 # others files
 *.save
 
+
 # Admin ssh key
 ./ssh_keys/azureuser
 
