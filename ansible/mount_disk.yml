@@ -1,0 +1,6 @@
+---
+
+- name: "Montage disque de stockage"
+  hosts: appli
+  roles:
+    - role: "storage"
