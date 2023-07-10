@@ -7,21 +7,16 @@ resource "local_file" "update_gitignore" {
 
   if (grep "# Admin ssh key" ../.gitignore); then
     lineinfile=$(sed -n '/# Admin ssh key/=' ../.gitignore)
-    linebefore=$(expr $lineinfile - 1)
-    if [ -z "$(sed -n ${linebefore}p ../.gitignore)" ]; then
-      lineinfile=$linebefore
+    linebefore=$(expr $${lineinfile} - 1)
+    if [ -z "$(sed -n $${linebefore}p ../.gitignore)" ]; then
+      lineinfile=$${linebefore}
     fi
-    finalline=$(expr $lineinfile + 2)
-    sed -i ${lineinfile},${finalline}d ../.gitignore
+    finalline=$(expr $${lineinfile} + 2)
+    sed -i $${lineinfile},$${finalline}d ../.gitignore
   fi
   echo "
 # Admin ssh key
 ./ssh_keys/${local.admin}
 " >> ../.gitignore
 EOT
-
-  provisioner "local-exec" {
-    command = "./scripts/script_init.sh && ./scripts/update_gitignore.sh"
-    interpreter = ["/bin/bash", "-x"]
-  }
 }

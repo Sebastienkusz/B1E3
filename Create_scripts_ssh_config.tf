@@ -46,12 +46,12 @@ fi
 
   if (grep "# ${local.resource_group_name}" ~/.ssh/config); then
     lineinfile=$(sed -n '/# ${local.resource_group_name}/=' ~/.ssh/config)
-    linebefore=$(expr $lineinfile - 1)
-    if [ -z "$(sed -n ${linebefore}p ~/.ssh/config)" ]; then
+    linebefore=$(expr $${lineinfile} - 1)
+    if [ -z "$(sed -n $${linebefore}p ~/.ssh/config)" ]; then
       lineinfile=$linebefore
     fi
-    finalline=$(expr $lineinfile + 15)
-    sed -i ${lineinfile},${finalline}d ~/.ssh/config
+    finalline=$(expr $${lineinfile} + 15)
+    sed -i $${lineinfile},$${finalline}d ~/.ssh/config
   fi
   echo "
 # ${local.resource_group_name}

@@ -40,12 +40,12 @@ fi
 
   if (grep "# b1e3-gr2" ~/.ssh/config); then
     lineinfile=$(sed -n '/# b1e3-gr2/=' ~/.ssh/config)
-    linebefore=$(expr $lineinfile - 1)
+    linebefore=$(expr ${lineinfile} - 1)
     if [ -z "$(sed -n ${linebefore}p ~/.ssh/config)" ]; then
-        lineinfile=$linebefore
+      lineinfile=$linebefore
     fi
-    finalline=$(expr $lineinfile + 15)
-    sed -i ${lineinfile},${finalline}d ~/.ssh/config  
+    finalline=$(expr ${lineinfile} + 15)
+    sed -i ${lineinfile},${finalline}d ~/.ssh/config
   fi
   echo "
 # b1e3-gr2
