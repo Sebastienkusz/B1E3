@@ -1,9 +1,30 @@
 # b1e3-gr2
 ## Introduction
 
+    Avant de commencer, on peut suuprimer les liaisons ssh si elles existent
+
+>`ssh-keygen -f "$HOME/.ssh/known_hosts" -R "b1e3-gr2-bastion.westeurope.cloudapp.azure.com"`
+
+>`ssh-keygen -f "$HOME/.ssh/known_hosts" -R "10.1.0.4"`
+
+>`ssh-keygen -f "$HOME/.ssh/known_hosts" -R "10.1.0.5"`
+
+
 NOTE : Le lancement du __terraform__ installe __dos2unix__ qui permet de formater les scripts générés.
 
 ### 1- Lancer le terraform depuis le dossier de base.
+
+Si terraform est déjà déployé par un collègue, il faudra lancer un terraform pour générer certains fichiers :
+
+```
+terraform apply -target local_file.inventaire -target local_file.script_ssh_config -target local_file.admin_rsa_file
+```
+```
+function test() {
+  console.log("This code will have a copy button to the right of it");
+}
+```
+
 
 Option possible :
 
@@ -18,21 +39,23 @@ Option possible :
 
 ### 2- Se placer dans le dossier ansible 
 
-```$> cd ansible```
+>```cd ansible```
 
-installer __ansible__ si ce n'est pas fait :
+    installer __ansible__ si ce n'est pas fait :
+    vérifier la version de python puis 
+    pip install ansible
 
-vérifier la version de python puis 
+Vérifier la communication avec les VM
 
-```$> pip install ansible```
+>```sh ../scripts/script_ansible.sh```
 
 Ajout des utilisateurs sur les 2 VM
 
-```$> ansible-playbook add-users.yml -i inventaire.ini```
+>```ansible-playbook add-users.yml -i inventaire.ini```
 
 Installation de node.js sur la VM appli
 
-```$> ansible-playbook install-nodejs.yml -i inventaire.ini```
+```ansible-playbook install-nodejs.yml -i inventaire.ini```
 
 
 ## Liste des ressources

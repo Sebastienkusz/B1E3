@@ -1,0 +1,11 @@
+---
+
+# Placement dans le dossier du disque de stockage
+# download du code Wikijs
+- name: "install wikijs"
+  shell: |
+    cd /mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace
+    wget https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz
+    mkdir wiki
+    tar xzf wiki-js.tar.gz -C ./wiki
+    cd ./wiki

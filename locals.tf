@@ -21,7 +21,7 @@ locals {
 # VM Bastion
 locals {
   bastion_name                 = "bastion"
-  nsg_bastion_rule_ipfilter    = "82.126.234.200" # IP Box 
+  nsg_bastion_rule_ipfilter    = "*" #"82.126.234.200" # IP Box 
   nsg_bastion_rule_sshport     = "22"
   public_ip_bastion_version    = "IPv4"
   public_ip_bastion_dns_name   = "${local.dns_prefix}-${local.bastion_name}"
