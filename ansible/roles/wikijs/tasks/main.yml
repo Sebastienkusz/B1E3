@@ -1,11 +1,18 @@
 ---
 
-# Placement dans le dossier du disque de stockage
-# download du code Wikijs
-- name: "install wikijs"
-  shell: |
-    cd /mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace
-    wget https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz
-    mkdir wiki
-    tar xzf wiki-js.tar.gz -C ./wiki
-    cd ./wiki
+#1. Création du repertoire pour l'installation des fichiers WikiJS
+- name: "wikijs directory"
+  file:
+    path: "{{wikijs_directory}}"
+    owner: "{{wikijs_user}}"
+    group: "{{wikijs_user}}"
+    state: directory
+
+#2. Décompresse le fichier source archive Wikijs et le formate sans extension
+- name: "uncompress mediawiki archive"
+  unarchive:
+    src: "{{mediawiki_archive_url}}"
+    dest: "{{mediawiki_directory}}"
+    owner: "{{wikijs_user}}"
+    group: "{{wikijs_user}}"
+    remote_src: yes

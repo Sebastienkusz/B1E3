@@ -47,6 +47,7 @@ locals {
   nsg_name               = "mariadb-2"
   nsg_rule_name          = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
+  mariadb_admin_password = "P@$$w0rd"
 }
 
 # Storage account
