@@ -1,17 +1,18 @@
 
 
 resource "azurerm_mariadb_server" "serverdb" {
-  name                         = "${local.resource_group_name}-${local.server_name}"
-  location                     = local.location
-  resource_group_name          = local.resource_group_name
-  sku_name                     = "GP_Gen5_2"
-  storage_mb                   = 5120
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-  administrator_login          = local.admin
-  administrator_login_password = local.mariadb_admin_password
-  version                      = "10.3"
-  ssl_enforcement_enabled      = false
+  name                             = "${local.resource_group_name}-${local.server_name}"
+  location                         = local.location
+  resource_group_name              = local.resource_group_name
+  sku_name                         = "GP_Gen5_2"
+  storage_mb                       = 5120
+  backup_retention_days            = 7
+  geo_redundant_backup_enabled     = false
+  administrator_login              = local.admin
+  administrator_login_password     = local.mariadb_admin_password
+  version                          = "10.3"
+  ssl_enforcement_enabled          = false
+  ssl_minimal_tls_version_enforced = "TLSEnforcementDisabled"
   #public_network_access_enabled = false
 }
 
