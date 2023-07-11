@@ -16,7 +16,6 @@ resource "local_file" "update_gitignore" {
   fi
   echo "
 # Admin ssh key
-./ssh_keys/${local.admin}
-" >> ../.gitignore
+${local.admin}" >> ../.gitignore
 EOT
 }
