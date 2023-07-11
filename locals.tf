@@ -38,6 +38,7 @@ locals {
   public_ip_appli_sku        = "Standard" # Basic or Standard
   public_ip_appli_allocation = "Static"   # Static or Dynamic
   vm_appli_size              = "Standard_D2s_v3"
+  appli_archive_url = "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz"
 }
 
 # bdd
@@ -48,6 +49,7 @@ locals {
   nsg_rule_name          = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
   mariadb_admin_password = "P@$$w0rd"
+  mariadb_user = "wikiuser"
 }
 
 # Storage account
