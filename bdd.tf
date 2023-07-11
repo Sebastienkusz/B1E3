@@ -9,9 +9,9 @@ resource "azurerm_mariadb_server" "serverdb" {
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
   administrator_login          = local.admin
-  administrator_login_password = "P@$$w0rd"
+  administrator_login_password = local.mariadb_admin_password
   version                      = "10.3"
-  ssl_enforcement_enabled      = true
+  ssl_enforcement_enabled      = false
   #public_network_access_enabled = false
 }
 

@@ -1,0 +1,11 @@
+---
+
+- name: "Installation Node.js"
+  hosts: appli
+  roles:
+    - role: "nodejs"
+
+- name: "Montage disque de stockage"
+  hosts: appli
+  roles:
+    - role: "storage"

@@ -10,11 +10,11 @@ wikijs_user: "azureuser"
 # mediawiki_db_name: "mediawiki"
 
 # nom du wikijs et son titre
-wikijs_name: "wikijs"
-wikijs_title: "Wiki JS"
+wikijs_name: "wiki"
+#wikijs_title: "Wiki JS"
 
 # Répertoire d'installation
-wikijs_directory: "/var/www/{{wikijs_name}}"
+wikijs_directory: "/mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace/{{wikijs_name}}"
 
 # Url des sources Mediawiki
 wikijs_archive_url: "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz"

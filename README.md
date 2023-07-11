@@ -1,38 +1,60 @@
 # b1e3-gr2
 ## Introduction
 
+    Avant de commencer, on peut suuprimer les liaisons ssh si elles existent
+
+>`ssh-keygen -f "$HOME/.ssh/known_hosts" -R "b1e3-gr2-bastion.westeurope.cloudapp.azure.com"`
+
+>`ssh-keygen -f "$HOME/.ssh/known_hosts" -R "10.1.0.4"`
+
+>`ssh-keygen -f "$HOME/.ssh/known_hosts" -R "10.1.0.5"`
+
+
 NOTE : Le lancement du __terraform__ installe __dos2unix__ qui permet de formater les scripts générés.
 
 ### 1- Lancer le terraform depuis le dossier de base.
 
-Option possible :
+Si terraform est déjà déployé par un collègue, il faudra lancer un terraform pour générer certains fichiers :
 
+>```terraform apply -target local_file.inventaire -target local_file.script_ssh_config -target local_file.admin_rsa_file -target local_file.update_gitignore```
+
+se placer dans le dossier scripts
+
+>```./script_init.sh```
+
+>```./update_gitignore.sh```
+
+>```./script_ansible.sh```
+
+
+Option possible pour un confort d'utilisation :
+
+    On crée des raccourcis dans le fichier config pour faciliter les accès
     Ajout de configuration dans le ~/.ssh/config
     pour avoir des raccourcis vers les VM
         ssh bastion 
         ssh appli
     pour cela, il suffit de lancer la commande
-        ./scripts/add_ssh_config.sh -u toto -f ssh_key
+>```./scripts/add_ssh_config.sh -u toto -f ssh_key```
+
         u étant le user
         f le nom de fichier de la clé ssh privée correspondant à la clé se trouvant dans le dossier ssh_keys
 
 ### 2- Se placer dans le dossier ansible 
 
-```$> cd ansible```
+>```cd ansible```
 
-installer __ansible__ si ce n'est pas fait :
-
-vérifier la version de python puis 
-
-```$> pip install ansible```
+    installer __ansible__ si ce n'est pas fait :
+    vérifier la version de python puis 
+    pip install ansible
 
 Ajout des utilisateurs sur les 2 VM
 
-```$> ansible-playbook add-users.yml -i inventaire.ini```
+>```ansible-playbook add-users.yml -i inventaire.ini```
 
-Installation de node.js sur la VM appli
+Installation de la VM appli
 
-```$> ansible-playbook install-nodejs.yml -i inventaire.ini```
+>```ansible-playbook install-appli.yml -i inventaire.ini```
 
 
 ## Liste des ressources
