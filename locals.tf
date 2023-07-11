@@ -59,6 +59,17 @@ locals {
   share_name           = "wikishare"
 }
 
+# Passerelle d'application
+locals {
+  backend_address_pool_name      = "${azurerm_subnet.Subnet["sr1"].name}-beap"
+  frontend_port_name             = "${azurerm_subnet.Subnet["sr1"].name}-feport"
+  frontend_ip_configuration_name = "${azurerm_subnet.Subnet["sr1"].name}-feip"
+  http_setting_name              = "${azurerm_virtual_network.VNet.name}-be-htst"
+  listener_name                  = "${azurerm_virtual_network.VNet.name}-httplstn"
+  request_routing_rule_name      = "${azurerm_virtual_network.VNet.name}-rqrt"
+  redirect_configuration_name    = "${azurerm_virtual_network.VNet.name}-rdrcfg"
+}
+
 locals {
   tags = {
     Development = basename(abspath(path.root))

@@ -57,7 +57,7 @@ resource "azurerm_network_interface" "Nic_Appli" {
     name                          = "${local.resource_group_name}-nic-${local.appli_name}-private_ip"
     subnet_id                     = azurerm_subnet.Subnet["sr1"].id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
+    #public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
   }
 }
 
