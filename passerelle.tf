@@ -1,12 +1,5 @@
 
 
-# resource "azurerm_public_ip" "example" {
-#   name                = "example-pip"
-#   resource_group_name = local.resource_group_name
-#   location            = local.location
-#   allocation_method   = "Dynamic"
-# }
-
 # # since these variables are re-used - a locals block makes this more maintainable
 # locals {
 #   backend_address_pool_name      = "${azurerm_subnet.Subnet.name}-beap"
@@ -18,8 +11,8 @@
 #   redirect_configuration_name    = "${azurerm_virtual_network.Vnet.name}-rdrcfg"
 # }
 
-# resource "azurerm_application_gateway" "network" {
-#   name                = "appgateway"
+# resource "azurerm_application_gateway" "gateway" {
+#   name                = "gateway"
 #   resource_group_name = local.resource_group_name
 #   location            = local.location
 
@@ -31,7 +24,7 @@
 
 #   gateway_ip_configuration {
 #     name      = "my-gateway-ip-configuration"
-#     subnet_id = azurerm_subnet.Subnet["sr1"].id
+#     subnet_id = azurerm_subnet.Subnet["gateway"].id
 #     public_ip_address_id = azurerm_public_ip.Public_IP_Appli.id
 #   }
 
@@ -74,19 +67,10 @@
 #   }
 # }
 
-
-# resource "azurerm_public_ip" "public_ip" {
-#   name                = "application_gateway_IP"
-#   resource_group_name = local.resource_group_name
-#   location            = local.location
-#   allocation_method   = "Static"
-#   sku                 = "Standard"
-# }
-
 ###################################################################################################################################################################
 
 resource "azurerm_application_gateway" "main" {
-  name                = "AppGateway"
+  name                = "${local.resource_group_name}-gateway"
   resource_group_name = local.resource_group_name
   location            = local.location
 
@@ -141,22 +125,20 @@ resource "azurerm_application_gateway" "main" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count               = 2
   name                = "nic-pip"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = local.location
+  resource_group_name = local.resource_group_name
 
   ip_configuration {
-    name                          = "nic-ipconfig-${count.index+1}"
+    name                          = "nic-ipconfig"
     subnet_id                     = azurerm_subnet.Subnet["sr1"].id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
 resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "nic-assoc" {
-  count                   = 2
-  network_interface_id    = azurerm_network_interface.nic[count.index].id
-  ip_configuration_name   = "nic-ipconfig-${count.index+1}"
+  network_interface_id    = azurerm_network_interface.Nic_Appli.id
+  ip_configuration_name   = "nic-ipconfig-gateway"
   backend_address_pool_id = one(azurerm_application_gateway.main.backend_address_pool).id
 }
 
@@ -168,45 +150,3 @@ resource "random_password" "password" {
   numeric = true
 }
 ######################################################################################################################################################
-# resource "azurerm_windows_virtual_machine" "vm" {
-#   count               = 2
-#   name                = "myVM${count.index+1}"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   location            = azurerm_resource_group.rg.location
-#   size                = "Standard_DS1_v2"
-#   admin_username      = "azureadmin"
-#   admin_password      = random_password.password.result
-
-#   network_interface_ids = [
-#     azurerm_network_interface.nic[count.index].id,
-#   ]
-
-#   os_disk {
-#     caching              = "ReadWrite"
-#     storage_account_type = "Standard_LRS"
-#   }
-
-
-#   source_image_reference {
-#     publisher = "MicrosoftWindowsServer"
-#     offer     = "WindowsServer"
-#     sku       = "2019-Datacenter"
-#     version   = "latest"
-#   }
-# }
-
-# resource "azurerm_virtual_machine_extension" "vm-extensions" {
-#   count                = 2
-#   name                 = "vm${count.index+1}-ext"
-#   virtual_machine_id   = azurerm_windows_virtual_machine.vm[count.index].id
-#   publisher            = "Microsoft.Compute"
-#   type                 = "CustomScriptExtension"
-#   type_handler_version = "1.10"
-
-#   settings = <<SETTINGS
-#     {
-#         "commandToExecute": "powershell Add-WindowsFeature Web-Server; powershell Add-Content -Path \"C:\\inetpub\\wwwroot\\Default.htm\" -Value $($env:computername)"
-#     }
-# SETTINGS
-
-# }
