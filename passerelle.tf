@@ -116,22 +116,22 @@ resource "azurerm_application_gateway" "main" {
   }
 }
 
-# resource "azurerm_network_interface" "nic" {
-#   name                = "nic-pip"
-#   location            = local.location
-#   resource_group_name = local.resource_group_name
+resource "azurerm_network_interface" "nic" {
+  name                = "nic-pip"
+  location            = local.location
+  resource_group_name = local.resource_group_name
 
-#   ip_configuration {
-#     name                          = "nic-ipconfig"
-#     subnet_id                     = azurerm_subnet.Subnet["sr1"].id
-#     private_ip_address_allocation = "Dynamic"
-#   }
-# }
+  ip_configuration {
+    name                          = "nic-ipconfig"
+    subnet_id                     = azurerm_subnet.Subnet["sr1"].id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
 
 resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "nic-assoc" {
   network_interface_id    = azurerm_network_interface.Nic_Appli.id
-  ip_configuration_name   = "nic-ipconfig-gateway"
-  backend_address_pool_id = one(azurerm_application_gateway.main.backend_address_pool).id
+  ip_configuration_name   = "${local.resource_group_name}-nic-${local.appli_name}-private_ip"
+  backend_address_pool_id = tolist(azurerm_application_gateway.main.backend_address_pool).0.id
 }
 
 resource "random_password" "password" {
