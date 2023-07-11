@@ -7,10 +7,10 @@
 *.tfstate.*
 
 # invetaire d'ansible
-**/ansible/inventaire.ini
+inventaire.ini
 
 # others files
 *.save
 
 # Admin ssh key
-**/ssh_keys/azureuser
+azureuser
