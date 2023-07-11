@@ -7,9 +7,9 @@
 #   roles:
 #     - role: "wikijs/confmaria"
 
-- name: "WikiJS Nginx configuration"
-  hosts: appli
-  gather_facts: no
-  tags: "Nginx"
-  roles:
-    - role: "wikijs/confnginx"
+# - name: "WikiJS Nginx configuration"
+#   hosts: appli
+#   gather_facts: no
+#   tags: "Nginx"
+#   roles:
+#     - role: "wikijs/confnginx"

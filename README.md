@@ -52,9 +52,9 @@ Ajout des utilisateurs sur les 2 VM
 
 >```ansible-playbook add-users.yml -i inventaire.ini```
 
-Installation de node.js sur la VM appli
+Installation de la VM appli
 
->```ansible-playbook install-nodejs.yml -i inventaire.ini```
+>```ansible-playbook install-appli.yml -i inventaire.ini```
 
 
 ## Liste des ressources
