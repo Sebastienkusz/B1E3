@@ -13,7 +13,7 @@ resource "azurerm_network_security_rule" "NSG_Appli_Rules_HTTP" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "80"
+  destination_port_range      = "3000"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = local.resource_group_name

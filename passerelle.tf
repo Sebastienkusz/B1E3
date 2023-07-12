@@ -79,7 +79,7 @@ resource "azurerm_application_gateway" "main" {
 
   frontend_port {
     name = local.frontend_port_name
-    port = 3000
+    port = 80
   }
 
   frontend_ip_configuration {
@@ -94,7 +94,7 @@ resource "azurerm_application_gateway" "main" {
   backend_http_settings {
     name                  = local.http_setting_name
     cookie_based_affinity = "Disabled"
-    port                  = 80
+    port                  = 3000
     protocol              = "Http"
     request_timeout       = 60
   }
@@ -105,6 +105,21 @@ resource "azurerm_application_gateway" "main" {
     frontend_port_name             = local.frontend_port_name
     protocol                       = "Http"
   }
+
+  # backend_http_settings {
+  #   name                  = local.http_setting_name
+  #   cookie_based_affinity = "Disabled"
+  #   port                  = 3000
+  #   protocol              = "Http"
+  #   request_timeout       = 60
+  # }
+
+  # http_listener {
+  #   name                           = local.listener_name
+  #   frontend_ip_configuration_name = local.frontend_ip_configuration_name
+  #   frontend_port_name             = local.frontend_port_name
+  #   protocol                       = "Http"
+  # }
 
   request_routing_rule {
     name                       = local.request_routing_rule_name

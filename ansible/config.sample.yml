@@ -8,7 +8,7 @@
 # Port the server should listen to
 # ---------------------------------------------------------------------
 
-port: 80 # 3000
+port: 80
 
 # ---------------------------------------------------------------------
 # Database
@@ -91,8 +91,8 @@ ssl:
 # Refer to https://github.com/vincit/tarn.js for all possible options
 
 pool:
-  # min: 2
-  # max: 10
+   min: 2
+   max: 10
 
 # ---------------------------------------------------------------------
 # IP address the server should listen to
@@ -130,7 +130,7 @@ offline: false
 # same DB (e.g. Kubernetes pods / load balanced instances). Leave false
 # otherwise. You MUST be using PostgreSQL to use this feature.
 
-ha: false
+ha: true
 
 # ---------------------------------------------------------------------
 # Data Path
