@@ -17,11 +17,6 @@ resource "azurerm_storage_share_directory" "smb" {
   name                 = "${local.resource_group_name}-${local.share_directory_name}"
   share_name           = azurerm_storage_share.share.name
   storage_account_name = azurerm_storage_account.wiki-account.name
-    provisioner "local-exec" {
-      when = destroy
-    command = "open WFH, '>completed.txt' and print WFH scalar localtime"
-    interpreter = ["perl", "-e"]
-  }
 }
 
 # Create variables file for ansible
