@@ -1,15 +1,14 @@
 ---
 
-# - name: "WikiJS db configuration"
-#   hosts: db
-#   gather_facts: no
-#   tags: [ "mariadb", "mysql" ]
-#   roles:
-#     - role: "wikijs/confmaria"
-
-- name: "WikiJS Nginx configuration"
-  hosts: appli
+- name: "WikiJS db configuration"
   gather_facts: no
-  tags: "Nginx"
+  tags: [ "mariadb", "mysql" ]
   roles:
-    - role: "wikijs/confnginx"
+    - role: "appli/mariadbconf"
+
+# - name: "WikiJS Nginx configuration"
+#   hosts: appli
+#   gather_facts: no
+#   tags: "Nginx"
+#   roles:
+#     - role: "wikijs/confnginx"

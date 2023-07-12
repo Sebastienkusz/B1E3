@@ -14,4 +14,5 @@ resource "azurerm_subnet" "Subnet" {
   resource_group_name  = local.resource_group_name
   virtual_network_name = azurerm_virtual_network.VNet.name
   address_prefixes     = [each.value]
+  #enforce_private_link_service_network_policies = true
 }
