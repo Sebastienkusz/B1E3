@@ -9,9 +9,15 @@ wikijs_domain: "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com" # ${azurerm_publ
 # Wikijs host
 wikijs_host: "b1e3-gr2-mariaserverdb.mariadb.database.azure.com"
 
-# User
+# Base de données
+wikijs_db_name: "b1e3gr2mariadb" # ${local.database_name}
+
+# Admin Base de données
+wikijs_admin_user: "azureuser@b1e3-gr2-mariaserverdb" # ${local.admin}
+wikijs_admin_password: "P@$$w0rd" # ${local.mariadb_admin_password}
+
+# User Base de données
 wikijs_db_user: "wikiuser" # ${local.mariadb_user}
-wikijs_db_host: "b1e3-gr2-mariaserverdb"
 wikijs_db_password: "toto"
 # wikijs_db_password: !vault |
 #           $ANSIBLE_VAULT;1.1;AES256
@@ -24,11 +30,9 @@ wikijs_db_password: "toto"
 # ansible-vault encrypt_string 'foobar' --name 'wikijs_db_password'
 ### WikiJS@2023
 
-wikijs_admin_user: "azureuser" # ${local.admin}
-wikijs_admin_password: "P@$$w0rd" # ${local.mariadb_admin_password}
 
-# # Base de données
-wikijs_db_name: "b1e3gr2mariadb" # ${local.database_name}
+# Wikijs Data
+wikijs_user: "azureuser" # ${local.admin}
 
 # nom du wikijs et son titre
 wikijs_name: "wiki-js" # ${local.appli_name}

@@ -1,20 +1,17 @@
 ---
 
-- name: "wikijs user and privileges"
-  azure_rm_mariadbserver:
-    resource_group: "{{resource_group}}"
-    name: "{{wikijs_db_host}}"
-    admin_username:
-    admin_password:
-    
+- name: Make sure pymysql is present
+  become: true # needed if the other tasks are not played as root
+  pip:
+    name: pymysql
+    state: present   
 
-# - name: "wikijs user and privileges"
-#   community.mysql.mysql_user:
-#     name: "{{wikijs_db_user}}"
-#     host: "{{wikijs_db_host}}"
-#     password: "{{wikijs_db_password}}"
-#     priv: "{{wikijs_db_name}}.*:ALL,GRANT"
-#     login_user: "{{wikijs_admin_user}}"
-#     login_host: "{{wikijs_db_host}}"
-#     login_password: "{{wikijs_admin_password}}"
-#     state: "present"
+- name: "wikijs user and privileges"
+  community.mysql.mysql_user:
+    name: "{{wikijs_db_user}}"
+    password: "{{wikijs_db_password}}"
+    priv: "{{wikijs_db_name}}.*:ALL,GRANT"
+    login_user: "{{wikijs_admin_user}}"
+    login_host: "{{wikijs_host}}"
+    login_password: "{{wikijs_admin_password}}"
+    state: "present"
