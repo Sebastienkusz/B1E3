@@ -44,10 +44,10 @@ db:
     # passphrase: xyz123
 
   # Optional - PostgreSQL only:
-  #schema: public
+  schema: public
 
   # SQLite only:
-  #storage: path/to/database.sqlite
+  storage: path/to/database.sqlite
 
 #######################################################################
 # ADVANCED OPTIONS                                                    #

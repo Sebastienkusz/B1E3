@@ -8,21 +8,16 @@
     group: "{{wikijs_user}}"
     state: directory
 
-# #2. Télécharge le fichier source archive Wikijs
-# - name: "wikijs download"
-#   get_url:
-#     url: "{{wikijs_archive_url}}{{wikijs_archive_name}}"
-#     dest: "{{wikijs_tar_directory}}"
-#     owner: "{{wikijs_user}}"
-#     group: "{{wikijs_user}}"
+#2. Télécharge le fichier source archive Wikijs
+- name: "wikijs download"
+  get_url:
+    url: "{{wikijs_archive_url}}"
+    dest: "{{wikijs_tar_directory}}"
 
 #3. Décompresse le fichier source archive Wikijs tar xzf wiki-js.tar.gz -C ./wiki
 - name: "uncompress wiki archive"
+  become: true
   unarchive:
-    src: "{{wikijs_archive_url}}{{wikikjs_archive_name}}"
+    src: "{{wikijs_tar_directory}}{{wikijs_archive_name}}"
     dest: "{{wikijs_directory}}"
-    owner: "{{wikijs_user}}"
-    group: "{{wikijs_user}}"
-    remote_src: yes
-    extra_opts:
-    - xzf
+    remote_src: true

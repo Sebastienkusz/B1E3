@@ -7,14 +7,22 @@ locals {
   location            = data.azurerm_resource_group.current.location
 }
 
+# Add users
+locals {
+  user1_name = "johann"
+  user1_sshkey = "johann"
+  user2_name = "sebastien"
+  user2_sshkey = "sebastien"
+}
+
 # Network
 locals {
   network_base = "10.1.0.0/16"
   network_name = "vnet"
   subnets = {
-    "sr1"     = "10.1.0.0/24"
-    "sr2"     = "10.1.1.0/24"
-    "gateway" = "10.1.2.0/24"
+    "sr1" = "10.1.0.0/24"
+    "sr2" = "10.1.1.0/24"
+    "gw"  = "10.1.2.0/24"
   }
 }
 
@@ -38,7 +46,7 @@ locals {
   public_ip_appli_sku        = "Standard" # Basic or Standard
   public_ip_appli_allocation = "Static"   # Static or Dynamic
   vm_appli_size              = "Standard_D2s_v3"
-  appli_archive_url = "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz"
+  appli_archive_url          = "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz"
 }
 
 # bdd
@@ -49,7 +57,7 @@ locals {
   nsg_rule_name          = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
   mariadb_admin_password = "P@$$w0rd"
-  mariadb_user = "wikiuser"
+  mariadb_user           = "wikiuser"
 }
 
 # Storage account
