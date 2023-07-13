@@ -3,6 +3,9 @@ resource "azurerm_network_security_group" "NSG_Appli" {
   name                = "${local.resource_group_name}-nsg-${local.appli_name}"
   location            = local.location
   resource_group_name = local.resource_group_name
+    lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # NSG Rule - HTTP Port - Appli

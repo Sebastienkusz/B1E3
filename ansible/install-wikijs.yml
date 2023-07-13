@@ -1,17 +1,7 @@
 ---
 
-- name: "WikiJS db configuration"
+- name: "WikiJS installation"
   hosts: appli
-  gather_facts: no
-  tags: [ "mariadb", "mysql" ]
+  tags: [ "wikijs" ]
   roles:
-    - role: "appli/mariadbconf"
-  tasks:
-    - debug: var=ansible_python_interpreter
-
-# - name: "WikiJS Nginx configuration"
-#   hosts: appli
-#   gather_facts: no
-#   tags: "Nginx"
-#   roles:
-#     - role: "wikijs/confnginx"
+    - role: "appli/wikijs"
