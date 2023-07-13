@@ -3,7 +3,7 @@ resource "azurerm_application_gateway" "main" {
   name                = "${local.resource_group_name}-gateway"
   resource_group_name = local.resource_group_name
   location            = local.location
-  
+
   sku {
     name     = "Standard_v2"
     tier     = "Standard_v2"
@@ -21,10 +21,10 @@ resource "azurerm_application_gateway" "main" {
   }
 
   frontend_ip_configuration {
-    name                 = local.frontend_ip_configuration_name
-    subnet_id = azurerm_subnet.Subnet["gw"].id
+    name                          = local.frontend_ip_configuration_name
+    subnet_id                     = azurerm_subnet.Subnet["gw"].id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = azurerm_public_ip.Public_IP_Appli.id
+    # public_ip_address_id = azurerm_public_ip.Public_IP_Appli.id
   }
 
   backend_address_pool {
@@ -34,8 +34,8 @@ resource "azurerm_application_gateway" "main" {
   }
 
   backend_http_settings {
-    name                  = local.http_setting_name
-   # path                  = ["/.well-known/acme-challenge/*"]
+    name = local.http_setting_name
+    # path                  = ["/.well-known/acme-challenge/*"]
     cookie_based_affinity = "Disabled"
     port                  = 3000
     protocol              = "Http"
@@ -88,16 +88,16 @@ resource "azurerm_application_gateway" "main" {
   #   paths = ["/.well-known/acme-challenge/*"]
   #   redirect_configuration_name = azurerm_storage_container.container.name
   # }
- }
+}
 
 resource "azurerm_network_interface" "nic" {
-  name                = "nic-pip"
+  name                = "${local.resource_group_name}-nic-gateway"
   location            = local.location
   resource_group_name = local.resource_group_name
 
   ip_configuration {
     name                          = "nic-ipconfig"
-    subnet_id                     = azurerm_subnet.Subnet["sr1"].id
+    subnet_id                     = azurerm_subnet.Subnet["gw"].id
     private_ip_address_allocation = "Dynamic"
   }
 }
