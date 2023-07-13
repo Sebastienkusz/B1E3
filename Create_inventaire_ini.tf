@@ -25,6 +25,7 @@ ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 -W %h:%p -q ${local.admin}@$
 ansible_connection=ssh
 ansible_ssh_user=${local.admin}
 ansible_become=true
+ansible_python_interpreter="/usr/bin/python3"
 EOT
 
   depends_on = [

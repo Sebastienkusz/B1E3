@@ -1,11 +1,9 @@
 
-###################################################################################################################################################################
-
 resource "azurerm_application_gateway" "main" {
   name                = "${local.resource_group_name}-gateway"
   resource_group_name = local.resource_group_name
   location            = local.location
-
+  
   sku {
     name     = "Standard_v2"
     tier     = "Standard_v2"
@@ -13,7 +11,7 @@ resource "azurerm_application_gateway" "main" {
   }
 
   gateway_ip_configuration {
-    name      = "gateway-ip-"
+    name      = "gateway-ip"
     subnet_id = azurerm_subnet.Subnet["gw"].id
   }
 
@@ -31,14 +29,15 @@ resource "azurerm_application_gateway" "main" {
 
   backend_address_pool {
     name = local.backend_address_pool_name
-    fqdns = "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com"
-    ip_addresses = azurerm_public_ip.Public_IP_Appli.id
+    #fqdns = "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com"
+    # ip_addresses = azurerm_public_ip.Public_IP_Appli.id
   }
 
   backend_http_settings {
     name                  = local.http_setting_name
+   # path                  = ["/.well-known/acme-challenge/*"]
     cookie_based_affinity = "Disabled"
-    port                  = 80
+    port                  = 3000
     protocol              = "Http"
     request_timeout       = 60
   }
@@ -60,25 +59,36 @@ resource "azurerm_application_gateway" "main" {
   }
 
   # request_routing_rule {
-  #   name                       = local.request_routing_rule_name
+  #   name                       = "routing_https"
   #   rule_type                  = "Basic"
-  #   http_listener_name         = local.listener_name
+  #   http_listener_name         = https-listener
+  #   redirect_configuration_name = "redirect-config-https"
   #   backend_address_pool_name  = local.backend_address_pool_name
   #   backend_http_settings_name = local.http_setting_name
-  #   url_path_map_name          = 
-  #   priority                   = 1
   # }
 
-  url_path_map {
-    name = "challenge"
-    path_rule = 
-  }
-  path_rule {
-    name = "acme-challenge"
-    paths = ["/.well-known/acme-challenge/*"]
-    redirect_configuration_name = azurerm_storage_container.container.name
-  }
-}
+  # redirect_configuration {
+  #     name                 = "redirect-config-https"
+  #     target_listener_name = "https-listener"
+  #     redirect_type        = "Permanent"
+  #     include_path         = true
+  #     include_query_string = true
+  #   }
+
+  # url_path_map {
+  #   name = "challenge"
+  #   default_backend_address_pool_name  = 
+  #   default_backend_http_settings_name =
+
+  #  # path_rule = 
+  # }
+
+  # path_rule {
+  #   name = "acme-challenge"
+  #   paths = ["/.well-known/acme-challenge/*"]
+  #   redirect_configuration_name = azurerm_storage_container.container.name
+  # }
+ }
 
 resource "azurerm_network_interface" "nic" {
   name                = "nic-pip"
@@ -107,19 +117,12 @@ resource "random_password" "password" {
 }
 ######################################################################################################################################################
 
-# Configuration de la règle de chemin sur la passerelle d'application
-resource "azurerm_application_gateway_url_path_map" "example" {
-  name                = "acme-challenge-path-map"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  default_backend_address_pool_name = azurerm_application_gateway_backend_address_pool.example.name
-  default_backend_http_settings_name = azurerm_application_gateway_http_setting.example.name
 
-  path_rule {
-    name = "acme-challenge-rule"
-    paths = ["/.well-known/acme-challenge/*"]
+#   path_rule {
+#     name = "acme-challenge-rule"
+#     paths = ["/.well-known/acme-challenge/*"]
 
-    backend_address_pool_name = azurerm_application_gateway_backend_address_pool.example.name
-    backend_http_settings_name = azurerm_application_gateway_http_setting.example.name
-  }
-}
+#     backend_address_pool_name = azurerm_application_gateway_backend_address_pool.example.name
+#     backend_http_settings_name = azurerm_application_gateway_http_setting.example.name
+#   }
+# }

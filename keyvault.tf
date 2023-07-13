@@ -1,3 +1,6 @@
+data "azurerm_client_config" "current" {}
+
+
 resource "azurerm_key_vault" "coffre" {
   name                        = "keyvault"
   location                    = local.location
@@ -6,7 +9,6 @@ resource "azurerm_key_vault" "coffre" {
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
-
   sku_name = "standard"
 
   access_policy {
@@ -28,7 +30,7 @@ resource "azurerm_key_vault" "coffre" {
 }
 
 resource "azurerm_storage_account" "key_storage" {
-  name                     = "key_storage"
+  name                     = "keystorage"
   resource_group_name      = local.resource_group_name
   location                 = local.location
   account_tier             = "Standard"
@@ -37,16 +39,13 @@ resource "azurerm_storage_account" "key_storage" {
 
 resource "azurerm_storage_container" "container" {
   name                  = "container"
-  resource_group_name   = local.resource_group_name
-  storage_account_name  = azurerm_storage_account.test.name
+  storage_account_name  = azurerm_storage_account.key_storage.name
   container_access_type = "blob"
 }
 
 resource "azurerm_storage_blob" "testsb" {
-  name = "/.well-known/acme-challenge/*"
-  resource_group_name    = local.resource_group_name
+  name                   = "/.well-known/acme-challenge/*"
   storage_account_name   = azurerm_storage_account.key_storage.name
   storage_container_name = azurerm_storage_container.container.name
-  type = "page"
-  size = 5120
+  type                   = "Append"
 }
