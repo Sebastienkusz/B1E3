@@ -24,7 +24,7 @@ resource "azurerm_application_gateway" "main" {
     name                          = local.frontend_ip_configuration_name
     subnet_id                     = azurerm_subnet.Subnet["gw"].id
     private_ip_address_allocation = "Dynamic"
-    # public_ip_address_id = azurerm_public_ip.Public_IP_Appli.id
+    #public_ip_address_id = azurerm_public_ip.Public_IP_Appli.id
   }
 
   backend_address_pool {
@@ -115,14 +115,3 @@ resource "random_password" "password" {
   upper   = true
   numeric = true
 }
-######################################################################################################################################################
-
-
-#   path_rule {
-#     name = "acme-challenge-rule"
-#     paths = ["/.well-known/acme-challenge/*"]
-
-#     backend_address_pool_name = azurerm_application_gateway_backend_address_pool.example.name
-#     backend_http_settings_name = azurerm_application_gateway_http_setting.example.name
-#   }
-# }
