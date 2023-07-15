@@ -118,14 +118,3 @@ resource "random_password" "password" {
   upper   = true
   numeric = true
 }
-######################################################################################################################################################
-
-
-#   path_rule {
-#     name = "acme-challenge-rule"
-#     paths = ["/.well-known/acme-challenge/*"]
-
-#     backend_address_pool_name = azurerm_application_gateway_backend_address_pool.example.name
-#     backend_http_settings_name = azurerm_application_gateway_http_setting.example.name
-#   }
-# }
