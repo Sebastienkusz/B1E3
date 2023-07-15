@@ -1,32 +1,19 @@
 # b1e3-gr2
-## Introduction
-
-Avant de commencer, on peut supprimer les liaisons ssh si elles existent
-
-    ssh-keygen -f "$HOME/.ssh/known_hosts" -R "b1e3-gr2-bastion.westeurope.cloudapp.azure.com"
-_____________
-    ssh-keygen -f "$HOME/.ssh/known_hosts" -R "10.1.0.4"
-_____________
-    ssh-keygen -f "$HOME/.ssh/known_hosts" -R "10.1.0.5"
-
 
 ### 1- Lancement de Terraform
 
 Si **terraform** est déjà déployé par un collègue, il faut lancer un **terraform apply** pour générer certains fichiers :
 
-    terraform apply -target local_file.inventaire -target local_file.script_ssh_config -target local_file.admin_rsa_file -target local_file.update_gitignore
+    terraform apply -target local_file.inventaire -target local_file.script_ssh_config -target local_file.admin_rsa_file -target local_file.update_gitignore -target local_file.appli_commun_main_yml -target local_file.storage_main_yml
 
 ### 2- Lancement des scripts
 
 Ensuite, on se place dans le dossier scripts
 
-NOTE : Le lancement de **script_init.sh** installe **dos2unix** qui permet de formater les scripts générés.
+NOTE : Le lancement de **script_init.sh** installe **dos2unix** qui permet de formater les scripts générés et supprimer les liaisons ssh si elles existent.
 
     ./script_init.sh
-________________
-    ./update_gitignore.sh
-________________
-    ./script_ansible.sh
+
 
   #### *Option possible pour un confort d'utilisation :*
 
@@ -63,9 +50,9 @@ _________
     
 Quand **Ansible** est installé, on lance les playbooks pour les configurations suivantes :
 
->Ajout des utilisateurs sur les 2 VM
+>Installation de la VM Bastion
 
-    ansible-playbook add-users.yml -i inventaire.ini
+    ansible-playbook install-bastion.yml -i inventaire.ini
     
 >Installation de la VM appli
 

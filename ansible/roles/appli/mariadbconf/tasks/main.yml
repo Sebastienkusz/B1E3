@@ -18,7 +18,7 @@
     host: "%"
     password: "{{wikijs_db_password}}"
     priv: "{{wikijs_db_name}}.*:ALL,GRANT"
-    login_user: "{{wikijs_admin_user}}"
+    login_user: "{{wikijs_admin_azuredb}}"
     login_host: "{{wikijs_host}}"
     login_password: "{{wikijs_admin_password}}"
     state: present

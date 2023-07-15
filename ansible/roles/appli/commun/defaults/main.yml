@@ -1,55 +1,39 @@
 ---
 
-# Azure MariaDB
-#resource_group: "b1e3-gr2"
-
 # Users
-vars:
-  - remote_user: azureuser # ${local.admin}
-  - user_password: 'AbCddefghijklmnopqrstuvwxyz2023'
-  users:
-  - { name: "johann", sshkey: "johann" }    # user1_name user1_sshkey
-  - { name: "sebastien", sshkey: "sebsatien" } # user2_name user2_sshkey
+users:
+  - { name: "johann", password: "A88kc3GIxVaFjOjE", sshkey: "johann" }   
+  - { name: "sebastien", password: "A88kc3GIxVaFjOjE", sshkey: "sebastien" }
 
 # DNS Wiki JS
-wikijs_domain: "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com" # ${azurerm_public_ip.Public_IP_Bastion.fqdn}
+wikijs_domain: "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com"
 
 # Wikijs host
 wikijs_host: "b1e3-gr2-mariaserverdb.mariadb.database.azure.com"
 
 # Base de données
-wikijs_db_name: "b1e3gr2mariadb" # ${local.database_name}
+wikijs_db_name: "b1e3gr2mariadb"
+wikijs_db_host: "b1e3-gr2-mariaserverdb"
 
 # Admin Base de données
-wikijs_admin_user: "azureuser@b1e3-gr2-mariaserverdb" # ${local.admin}
-wikijs_admin_password: "P@$$w0rd" # ${local.mariadb_admin_password}
+wikijs_admin_user: "azureuser" # "azureuser@b1e3-gr2-mariaserverdb"
+wikijs_admin_azuredb: "azureuser@b1e3-gr2-mariaserverdb"
+wikijs_admin_password: "yTRiHWuVVMor4Kv%"
 
 # User Base de données
-wikijs_db_user: "wikiuser" # ${local.mariadb_user}
-wikijs_db_password: "toto"
-
-# wikijs_db_password: !vault |
-#           $ANSIBLE_VAULT;1.1;AES256
-#           34393066353764303062373532343637303034636563623737383030316634303633623331366333
-#           3434373730393938373732313832323462313565326663630a323238626165353831363435393261
-#           31386166326437623062306230323339326137333438323339613930653139303462396632316433
-#           6565376130616561370a383530316361636238343463663830326432356535643662353136656663
-#           3733
-
-# ansible-vault encrypt_string 'foobar' --name 'wikijs_db_password'
-### WikiJS@2023
-
+wikijs_db_user: "wikiuser"
+wikijs_db_password: "DKyZRubvYGxeT1#a"
 
 # Wikijs Data
-wikijs_user: "azureuser" # ${local.admin}
+wikijs_user: "azureuser"
 
-# nom du wikijs et son titre
-wikijs_name: "wiki-js" # ${local.appli_name}
+# nom du dossier wikijs
+wikijs_name: "wiki-js"
 
-# Répertoire d'installation
+# Dossiers d'installation
 wikijs_tar_directory: "/tmp/"  
-wikijs_directory: "/mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace/{{wikijs_name}}/"  # "/mnt/${azurerm_storage_share.share.name}/${azurerm_storage_share_directory.smb.name}/"
+wikijs_directory: "/mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace/{{wikijs_name}}/"
 
 # Url des sources Mediawiki
-wikijs_archive_name: "wiki-js.tar.gz" #"wiki-js.tar.gz"
-wikijs_archive_url: "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz" # ${local.appli_archive_url}
+wikijs_archive_name: "wiki-js.tar.gz"
+wikijs_archive_url: "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz"

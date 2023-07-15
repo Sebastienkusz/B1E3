@@ -21,7 +21,7 @@ resource "azurerm_application_gateway" "main" {
   }
 
   frontend_ip_configuration {
-    name                          = local.frontend_ip_configuration_name
+    name = local.frontend_ip_configuration_name
     #subnet_id                     = azurerm_subnet.Subnet["gw"].id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
@@ -88,6 +88,9 @@ resource "azurerm_application_gateway" "main" {
   #   paths = ["/.well-known/acme-challenge/*"]
   #   redirect_configuration_name = azurerm_storage_container.container.name
   # }
+  depends_on = [
+    local_file.appli_commun_main_yml
+  ]
 }
 
 # resource "azurerm_network_interface" "nic" {
