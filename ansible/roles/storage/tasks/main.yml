@@ -1,5 +1,11 @@
 ---
 
+# - name: "Add Samba"
+#   become: true
+#   apt:
+#     name: samba
+#     state: present
+
 # Mount storage disk
 - name: "Mount storage disk"
   shell: |

@@ -21,16 +21,16 @@ resource "azurerm_application_gateway" "main" {
   }
 
   frontend_ip_configuration {
-    name                          = local.frontend_ip_configuration_name
-    subnet_id                     = azurerm_subnet.Subnet["gw"].id
+    name = local.frontend_ip_configuration_name
+    #subnet_id                     = azurerm_subnet.Subnet["gw"].id
     private_ip_address_allocation = "Dynamic"
-    #public_ip_address_id = azurerm_public_ip.Public_IP_Appli.id
+    public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
   }
 
   backend_address_pool {
     name = local.backend_address_pool_name
     #fqdns = "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com"
-    # ip_addresses = azurerm_public_ip.Public_IP_Appli.id
+    ip_addresses = [azurerm_public_ip.Public_IP_Appli.ip_address]
   }
 
   backend_http_settings {
@@ -88,19 +88,22 @@ resource "azurerm_application_gateway" "main" {
   #   paths = ["/.well-known/acme-challenge/*"]
   #   redirect_configuration_name = azurerm_storage_container.container.name
   # }
+  depends_on = [
+    local_file.appli_commun_main_yml
+  ]
 }
 
-resource "azurerm_network_interface" "nic" {
-  name                = "${local.resource_group_name}-nic-gateway"
-  location            = local.location
-  resource_group_name = local.resource_group_name
+# resource "azurerm_network_interface" "nic" {
+#   name                = "${local.resource_group_name}-nic-gateway"
+#   location            = local.location
+#   resource_group_name = local.resource_group_name
 
-  ip_configuration {
-    name                          = "nic-ipconfig"
-    subnet_id                     = azurerm_subnet.Subnet["gw"].id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
+#   ip_configuration {
+#     name                          = "nic-ipconfig"
+#     subnet_id                     = azurerm_subnet.Subnet["gw"].id
+#     private_ip_address_allocation = "Dynamic"
+#   }
+# }
 
 resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "nic-assoc" {
   network_interface_id    = azurerm_network_interface.Nic_Appli.id
