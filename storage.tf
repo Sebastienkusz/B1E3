@@ -27,6 +27,7 @@ resource "local_file" "storage_main_yml" {
   content         = <<-EOT
 # Variables to mount storage disk
 storage_account_name: "${local.resource_group_name}-${local.share_name}"
+storage_account_key: "${azurerm_storage_account.wiki-account.primary_access_key}"
 share_name: "${local.storage_account_name}"
 EOT
 }

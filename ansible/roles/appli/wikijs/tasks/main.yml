@@ -46,3 +46,20 @@
     - { From: '# min: 2', To: 'min: 2'}
     - { From: '# max: 10', To: 'max: 10'}
     - { From: 'ha: false', To: 'ha: true'}
+
+#5. Exécuter wikijs en tant que service
+- name: "Create wiki service"
+  become: true
+  copy:
+    dest: "/etc/systemd/system/{{wikijs_service}}.service"
+    content: "{{wikijs_service_content}}"
+
+- name: "Force systemd to reread configs"
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: "Start and Enable service wikijs "
+  ansible.builtin.systemd:
+    name: "{{wikijs_service}}"
+    state: started
+    enabled: true
