@@ -24,8 +24,8 @@
   tasks:
     - debug: var=ansible_python_interpreter
 
-# - name: "WikiJS installation"
-#   hosts: appli
-#   tags: [ "wikijs" ]
-#   roles:
-#     - role: "appli/wikijs"
+- name: "WikiJS installation"
+  hosts: appli
+  tags: [ "wikijs" ]
+  roles:
+    - role: "appli/wikijs"

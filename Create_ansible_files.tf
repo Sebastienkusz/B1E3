@@ -77,6 +77,25 @@ wikijs_directory: "/mnt/${azurerm_storage_share.share.name}/${azurerm_storage_sh
 # Url des sources Mediawiki
 wikijs_archive_name: "${local.appli_archive_name}"
 wikijs_archive_url: "${local.appli_archive_url}"
+
+# Service
+wikijs_service: "${local.appli_service}"
+wikijs_service_content: |
+  [Unit]
+  Description=Wiki.js
+  After=network.target
+
+  [Service]
+  Type=simple
+  ExecStart=/usr/bin/node server
+  Restart=always
+  # Consider creating a dedicated user for Wiki.js here:
+  User=nobody
+  Environment=NODE_ENV=production
+  WorkingDirectory={{wikijs_directory}}
+
+  [Install]
+  WantedBy=multi-user.target
 EOT
 
   depends_on = [

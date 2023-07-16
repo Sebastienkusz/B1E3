@@ -48,6 +48,7 @@ locals {
   vm_appli_size              = "Standard_D2s_v3"
   appli_archive_url          = "https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz"
   appli_archive_name         = basename("${local.appli_archive_url}")
+  appli_service              = regex("[a-z]+", "${local.appli_name}") # trim("${local.appli_name}", "-")
 }
 
 # bdd
