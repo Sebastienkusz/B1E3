@@ -58,9 +58,12 @@ locals {
   nsg_name               = "mariadb"
   nsg_rule_name          = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
-  mariadb_admin_password = random_password.admin_mariadb.result # "P@$$w0rd"
+  mariadb_admin_password = random_password.admin_mariadb.result
   mariadb_user           = "wikiuser"
-  mariadb_user_password  = random_password.user_mariadb.result # "toto"
+  mariadb_user_password  = random_password.user_mariadb.result
+  mariadb_private_dns_zone = "privatelink_mariadb"
+  mariadb_private_dns_link = "dns-vnet_link"
+  mariadb_private_endpoint = "private-endpoint"
 }
 
 # Storage account
@@ -83,12 +86,12 @@ locals {
 
 # Scale set
 locals {
-  scale_name = "scale_set"
-  scale_size              = "Standard_D2s_v3"
-  scale_network_name = "scale_network"
-  scale_ip_name = "scale_ip"
-  autoscale_name                = "AutoscaleSetting"
-  autoscale_profile     = "Autoscaling"
+  scale_name                 = "scale_set"
+  scale_size                 = "Standard_D2s_v3"
+  scale_network_name         = "scale_network"
+  scale_ip_name              = "scale_ip"
+  autoscale_name             = "AutoscaleSetting"
+  autoscale_profile          = "Autoscaling"
   autoscale_rule_metric_name = "Percentage CPU"
 }
 

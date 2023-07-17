@@ -1,14 +1,14 @@
-# Create VMS group
+# action plan 10. Create VMs Scale Set
 resource "azurerm_linux_virtual_machine_scale_set" "scale" {
-  name                = "${local.resource_group_name}-${local.scale_name}"
-  location            = local.location
-  resource_group_name = local.resource_group_name
-  upgrade_mode        = "Manual"
-  sku                 = local.scale_size
-  instances           = 2
-  admin_username      = local.admin
+  name                            = "${local.resource_group_name}-${local.scale_name}"
+  location                        = local.location
+  resource_group_name             = local.resource_group_name
+  upgrade_mode                    = "Manual"
+  sku                             = local.scale_size
+  instances                       = 2
+  admin_username                  = local.admin
   disable_password_authentication = true
-  encryption_at_host_enabled = true
+  encryption_at_host_enabled      = true
 
   admin_ssh_key {
     username   = local.admin
@@ -44,6 +44,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scale" {
   }
 }
 
+# action plan 11. Auto-scaling
 resource "azurerm_monitor_autoscale_setting" "autoscale" {
   name                = "${local.resource_group_name}-${local.autoscale_name}"
   resource_group_name = local.resource_group_name
@@ -61,7 +62,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale" {
 
     rule {
       metric_trigger {
-        metric_name        = "${local.autoscale_rule_metric_name}"
+        metric_name        = local.autoscale_rule_metric_name
         metric_resource_id = azurerm_linux_virtual_machine_scale_set.scale.id
         time_grain         = "PT1M"
         statistic          = "Average"
@@ -74,19 +75,19 @@ resource "azurerm_monitor_autoscale_setting" "autoscale" {
         #   name     = "AppName"
         #   operator = "Equals"
         #   values   = ["App1"]
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT1M"
-        }
       }
 
-        rule {
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
       metric_trigger {
-        metric_name        = "${local.autoscale_rule_metric_name}"
+        metric_name        = local.autoscale_rule_metric_name
         metric_resource_id = azurerm_linux_virtual_machine_scale_set.scale.id
         time_grain         = "PT1M"
         statistic          = "Average"
@@ -94,22 +95,22 @@ resource "azurerm_monitor_autoscale_setting" "autoscale" {
         time_aggregation   = "Average"
         operator           = "LessThan"
         threshold          = 30
-        }
+      }
 
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT1M"
-        }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
       }
     }
-  
+  }
 
-#   predictive {
-#     scale_mode = "Enabled"
-#     #look_ahead_time = "PT5M"
-#   }
+
+  #   predictive {
+  #     scale_mode = "Enabled"
+  #     #look_ahead_time = "PT5M"
+  #   }
 
   notification {
     email {

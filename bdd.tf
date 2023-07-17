@@ -68,13 +68,13 @@ resource "azurerm_network_security_rule" "mariadb_rule" {
 
 #Create private dns zone
 resource "azurerm_private_dns_zone" "dnszone" {
-  name                = "privatelink.mariadb.database.azure.com"
+  name                = "${local.resource_group_name}-${local.mariadb_private_dns_zone}"
   resource_group_name = local.resource_group_name
 }
 
 #Create a link between private dns zone and virtual network
 resource "azurerm_private_dns_zone_virtual_network_link" "vnetlink" {
-  name                  = "dnsvnetlink"
+  name                  = "${local.resource_group_name}-${local.mariadb_private_dns_link}"
   resource_group_name   = local.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.dnszone.name
   virtual_network_id    = azurerm_virtual_network.VNet.id
@@ -82,20 +82,20 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnetlink" {
 
 #Create endpoint
 resource "azurerm_private_endpoint" "pep" {
-  name                = "pep"
+  name                = "${local.resource_group_name}-${local.mariadb_private_endpoint}"
   location            = local.location
   resource_group_name = local.resource_group_name
   subnet_id           = azurerm_subnet.Subnet["sr2"].id
 
   private_service_connection {
-    name                           = "mariadbprivatelink"
+    name                           = "${local.mariadb_private_dns_link}"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mariadb_server.serverdb.id
-    subresource_names              = ["mariadbServer"]
+    subresource_names              = ["${azurerm_mariadb_server.serverdb.name}"]
   }
 
   private_dns_zone_group {
-    name                 = "dns-zone-group"
+    name                 = "${local.mariadb_private_dns_zone}-dns-zone-group"
     private_dns_zone_ids = [azurerm_private_dns_zone.dnszone.id]
   }
 }
@@ -109,7 +109,7 @@ data "azurerm_private_endpoint_connection" "private-ip" {
 
 #Create private dns record in the private dns zone
 resource "azurerm_private_dns_a_record" "dnsrecord" {
-  name                = "b1e3-gr2-dns"
+  name                = "${local.resource_group_name}-dns"
   zone_name           = azurerm_private_dns_zone.dnszone.name
   resource_group_name = local.resource_group_name
   ttl                 = 300
