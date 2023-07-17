@@ -28,7 +28,7 @@
   copy:
     src: "{{wikijs_directory}}/config.sample.yml"
     dest: "{{wikijs_directory}}/config.yml"
-    remote_src: true
+    remote_src: true   
 
 - name: "Replace db type"
   ansible.builtin.replace:
@@ -46,6 +46,14 @@
     - { From: '# min: 2', To: 'min: 2'}
     - { From: '# max: 10', To: 'max: 10'}
     - { From: 'ha: false', To: 'ha: true'}
+    - { From: 'dataPath: ./data', To: 'dataPath: {{wikijs_data}}'}
+
+- name: "Save config.yml in smb storage"
+  become: true
+  copy:
+    src: "{{wikijs_directory}}/config.yml"
+    dest: "{{wikijs_storage}}/config.yml"
+    remote_src: true 
 
 #5. Exécuter wikijs en tant que service
 - name: "Create wiki service"

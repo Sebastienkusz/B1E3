@@ -71,8 +71,10 @@ wikijs_user: "${local.admin}"
 wikijs_name: "${local.appli_name}"
 
 # Dossiers d'installation
-wikijs_tar_directory: "/tmp/"  
-wikijs_directory: "/mnt/${azurerm_storage_share.share.name}/${azurerm_storage_share_directory.smb.name}/{{wikijs_name}}/"
+wikijs_tar_directory: "/tmp/"
+wikijs_directory: "/var/www/{{wikijs_name}}/"
+wikijs_storage: "/mnt/${azurerm_storage_share.share.name}/${azurerm_storage_share_directory.smb.name}/{{wikijs_name}}/"
+wikijs_data: "{{wikijs_storage}}data"
 
 # Url des sources Mediawiki
 wikijs_archive_name: "${local.appli_archive_name}"
