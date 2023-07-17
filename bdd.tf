@@ -86,12 +86,14 @@ resource "azurerm_private_endpoint" "pep" {
   location            = local.location
   resource_group_name = local.resource_group_name
   subnet_id           = azurerm_subnet.Subnet["sr2"].id
+
   private_service_connection {
     name                           = "mariadbprivatelink"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mariadb_server.serverdb.id
     subresource_names              = ["mariadbServer"]
   }
+
   private_dns_zone_group {
     name                 = "dns-zone-group"
     private_dns_zone_ids = [azurerm_private_dns_zone.dnszone.id]
@@ -107,7 +109,7 @@ data "azurerm_private_endpoint_connection" "private-ip" {
 
 #Create private dns record in the private dns zone
 resource "azurerm_private_dns_a_record" "dnsrecord" {
-  name                = "record_db"
+  name                = "b1e3-gr2-dns"
   zone_name           = azurerm_private_dns_zone.dnszone.name
   resource_group_name = local.resource_group_name
   ttl                 = 300
