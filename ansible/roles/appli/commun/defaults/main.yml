@@ -31,15 +31,10 @@ wikijs_user: "azureuser"
 wikijs_name: "wiki-js"
 
 # Dossiers d'installation
-<<<<<<< HEAD
-wikijs_tar_directory: "/tmp/"  
-wikijs_directory: "/mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace/{{wikijs_name}}/"
-=======
 wikijs_tar_directory: "/tmp/"
 wikijs_directory: "/var/www/{{wikijs_name}}/"
 wikijs_storage: "/mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace/{{wikijs_name}}/"
 wikijs_data: "{{wikijs_storage}}data"
->>>>>>> main
 
 # Url des sources Mediawiki
 wikijs_archive_name: "wiki-js.tar.gz"
