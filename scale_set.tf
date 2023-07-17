@@ -39,10 +39,10 @@
 
 # ########################################################################################################
 
-# resource "azurerm_linux_virtual_machine_scale_set" "example" {
-#   name                = "exampleset"
-#   location            = azurerm_resource_group.example.location
-#   resource_group_name = azurerm_resource_group.example.name
+# resource "azurerm_linux_virtual_machine_scale_set" "scale" {
+#   name                = "scaleset"
+#   location            = local.location
+#   resource_group_name = local.resource_group_name
 #   upgrade_mode        = "Manual"
 #   sku                 = "Standard_F2"
 #   instances           = 2
@@ -82,23 +82,23 @@
 
 # resource "azurerm_monitor_autoscale_setting" "example" {
 #   name                = "myAutoscaleSetting"
-#   resource_group_name = azurerm_resource_group.example.name
-#   location            = azurerm_resource_group.example.location
-#   target_resource_id  = azurerm_linux_virtual_machine_scale_set.example.id
+#   resource_group_name = local.resource_group_name
+#   location            = local.location
+#   target_resource_id  = azurerm_linux_virtual_machine_scale_set.scale.id
 
 #   profile {
 #     name = "defaultProfile"
 
 #     capacity {
-#       default = 1
-#       minimum = 1
-#       maximum = 10
+#       default = 2
+#       minimum = 2
+#       maximum = 8
 #     }
 
 #     rule {
 #       metric_trigger {
 #         metric_name        = "Percentage CPU"
-#         metric_resource_id = azurerm_linux_virtual_machine_scale_set.example.id
+#         metric_resource_id = azurerm_linux_virtual_machine_scale_set.scale.id
 #         time_grain         = "PT1M"
 #         statistic          = "Average"
 #         time_window        = "PT5M"
@@ -124,7 +124,7 @@
 #     rule {
 #       metric_trigger {
 #         metric_name        = "Percentage CPU"
-#         metric_resource_id = azurerm_linux_virtual_machine_scale_set.example.id
+#         metric_resource_id = azurerm_linux_virtual_machine_scale_set.scale.id
 #         time_grain         = "PT1M"
 #         statistic          = "Average"
 #         time_window        = "PT5M"
