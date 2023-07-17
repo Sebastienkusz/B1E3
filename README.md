@@ -28,7 +28,8 @@ Pour cela, il suffit de lancer la commande suivante :
 
     ./add_ssh_config.sh -u toto -f ssh_key
 
-"u" étant le user
+"u" étant le user 
+
 "f" étant le nom de fichier de la clé ssh privée correspondant à la clé se trouvant dans le dossier ssh_keys
 
 ### 3- Lancement d'Ansible 
