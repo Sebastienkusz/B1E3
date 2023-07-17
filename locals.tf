@@ -7,7 +7,7 @@ locals {
   location            = data.azurerm_resource_group.current.location
 }
 
-# Add users
+# Add users (only 2 users)
 locals {
   user1_name   = "johann"
   user1_sshkey = "johann"
@@ -15,7 +15,7 @@ locals {
   user2_sshkey = "sebastien"
 }
 
-# Network
+# Network (only 3 subnets)
 locals {
   network_base = "10.1.0.0/16"
   network_name = "vnet"
@@ -55,12 +55,15 @@ locals {
 locals {
   server_name            = "mariaserverdb"
   database_name          = "b1e3gr2mariadb"
-  nsg_name               = "mariadb-2"
+  nsg_name               = "mariadb"
   nsg_rule_name          = "mariadb_rule"
   nsg_bdd_rule_mysqlport = "3306"
-  mariadb_admin_password = random_password.admin_mariadb.result # "P@$$w0rd"
+  mariadb_admin_password = random_password.admin_mariadb.result
   mariadb_user           = "wikiuser"
-  mariadb_user_password  = random_password.user_mariadb.result # "toto"
+  mariadb_user_password  = random_password.user_mariadb.result
+  mariadb_private_dns_zone = "privatelink_mariadb"
+  mariadb_private_dns_link = "dns-vnet_link"
+  mariadb_private_endpoint = "private-endpoint"
 }
 
 # Storage account
@@ -79,6 +82,17 @@ locals {
   listener_name                  = "${azurerm_virtual_network.VNet.name}-httplstn"
   request_routing_rule_name      = "${azurerm_virtual_network.VNet.name}-rqrt"
   redirect_configuration_name    = "${azurerm_virtual_network.VNet.name}-rdrcfg"
+}
+
+# Scale set
+locals {
+  scale_name                 = "scale_set"
+  scale_size                 = "Standard_D2s_v3"
+  scale_network_name         = "scale_network"
+  scale_ip_name              = "scale_ip"
+  autoscale_name             = "AutoscaleSetting"
+  autoscale_profile          = "Autoscaling"
+  autoscale_rule_metric_name = "Percentage CPU"
 }
 
 locals {

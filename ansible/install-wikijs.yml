@@ -1,7 +1,0 @@
----
-
-- name: "WikiJS installation"
-  hosts: appli
-  tags: [ "wikijs" ]
-  roles:
-    - role: "appli/wikijs"
