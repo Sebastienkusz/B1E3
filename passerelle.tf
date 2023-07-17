@@ -59,10 +59,10 @@ resource "azurerm_application_gateway" "main" {
   }
 
   # request_routing_rule {
-  #   name                       = "routing_https"
-  #   rule_type                  = "Basic"
+  #   name                       = "routing_challenge"
+  #   rule_type                  = "PathBaseRouting"
   #   http_listener_name         = https-listener
-  #   redirect_configuration_name = "redirect-config-https"
+  #   redirect_configuration_name = "redirect-challenge"
   #   backend_address_pool_name  = local.backend_address_pool_name
   #   backend_http_settings_name = local.http_setting_name
   # }
@@ -75,24 +75,23 @@ resource "azurerm_application_gateway" "main" {
   #     include_query_string = true
   #   }
 
-  # url_path_map {
-  #   name = "challenge"
-  #   default_backend_address_pool_name  = 
-  #   default_backend_http_settings_name =
+ url_path_map {
+    name                                 = "challenge"
+    default_redirect_configuration_name  = local.redirect_configuration_name
 
-  #  # path_rule = 
-  # }
+    path_rule {
+      name                        = "challenge_rule"
+      redirect_configuration_name = local.redirect_configuration_name
+      paths = [
+        "/.well-known/acme-challenge/*",
+      ]
 
-  # path_rule {
-  #   name = "acme-challenge"
-  #   paths = ["/.well-known/acme-challenge/*"]
-  #   redirect_configuration_name = azurerm_storage_container.container.name
-  # }
-  depends_on = [
-    local_file.appli_commun_main_yml
-  ]
-}
-
+  # depends_on = [
+  #   local_file.appli_commun_main_yml
+  # ]
+    }
+  }
+}  
 # resource "azurerm_network_interface" "nic" {
 #   name                = "${local.resource_group_name}-nic-gateway"
 #   location            = local.location
