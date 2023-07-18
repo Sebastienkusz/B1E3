@@ -88,7 +88,7 @@ resource "azurerm_private_endpoint" "pep" {
   subnet_id           = azurerm_subnet.Subnet["sr2"].id
 
   private_service_connection {
-    name                           = "${local.mariadb_private_dns_link}"
+    name                           = local.mariadb_private_dns_link
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mariadb_server.serverdb.id
     subresource_names              = ["${azurerm_mariadb_server.serverdb.name}"]

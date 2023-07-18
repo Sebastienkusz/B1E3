@@ -105,12 +105,12 @@ resource "azurerm_monitor_autoscale_setting" "autoscale" {
       }
     }
   }
+}
 
-
-  #   predictive {
-  #     scale_mode = "Enabled"
-  #     #look_ahead_time = "PT5M"
-  #   }
+#   predictive {
+#     scale_mode = "Enabled"
+#     #look_ahead_time = "PT5M"
+#   }
 
 #   network_interface {
 #     name    = "TestNetworkProfile"

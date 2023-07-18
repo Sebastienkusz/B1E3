@@ -53,14 +53,14 @@ locals {
 
 # bdd
 locals {
-  server_name            = "mariaserverdb"
-  database_name          = "b1e3gr2mariadb"
-  nsg_name               = "mariadb"
-  nsg_rule_name          = "mariadb_rule"
-  nsg_bdd_rule_mysqlport = "3306"
-  mariadb_admin_password = random_password.admin_mariadb.result
-  mariadb_user           = "wikiuser"
-  mariadb_user_password  = random_password.user_mariadb.result
+  server_name              = "mariaserverdb"
+  database_name            = "b1e3gr2mariadb"
+  nsg_name                 = "mariadb"
+  nsg_rule_name            = "mariadb_rule"
+  nsg_bdd_rule_mysqlport   = "3306"
+  mariadb_admin_password   = random_password.admin_mariadb.result
+  mariadb_user             = "wikiuser"
+  mariadb_user_password    = random_password.user_mariadb.result
   mariadb_private_dns_zone = "privatelink_mariadb"
   mariadb_private_dns_link = "dns-vnet_link"
   mariadb_private_endpoint = "private-endpoint"
@@ -75,7 +75,7 @@ locals {
 
 # Passerelle d'application
 locals {
-  #http
+  # HTTP
   backend_address_pool_name      = "${local.resource_group_name}-beap"
   frontend_port_name             = "${local.resource_group_name}-porthttp"
   frontend_ip_configuration_name = "${local.resource_group_name}-feip"
@@ -83,11 +83,11 @@ locals {
   listener_name                  = "${local.resource_group_name}-httplstn"
   request_routing_rule_name      = "${local.resource_group_name}-rqrt"
   redirect_configuration_name    = "${local.resource_group_name}-rdrcfg"
-  #https
-  frontend_port_name_https = "${local.resource_group_name}-porthttps"
-  listener_name_https = "${local.resource_group_name}-httpslstn"
+  # HTTPS
+  frontend_port_name_https             = "${local.resource_group_name}-porthttps"
+  listener_name_https                  = "${local.resource_group_name}-httpslstn"
   frontend_ip_configuration_name_https = "${local.resource_group_name}-feiphttps"
-  ssl_certificate_name = "${local.resource_group_name}-cert
+  ssl_certificate_name                 = "${local.resource_group_name}-cert"
 }
 
 # Scale set
