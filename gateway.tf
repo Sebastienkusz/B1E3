@@ -45,12 +45,12 @@ resource "azurerm_application_gateway" "main" {
     frontend_ip_configuration_name = local.frontend_ip_configuration_name_https
     frontend_port_name             = local.frontend_port_name_https
     protocol                       = "Https"
-    ssl_certificate_name           = local.ssl_certificate_name
+    # ssl_certificate_name           = local.ssl_certificate_name
   }
 
   ssl_certificate {
     name                = local.ssl_certificate_name
-    key_vault_secret_id = data.azurerm_key_vault_certificate.cert.secret_id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
   backend_address_pool {
@@ -88,6 +88,17 @@ resource "azurerm_application_gateway" "main" {
     priority           = 1
   }
 
+   url_path_map {
+    name                               = "Challenge"
+    default_backend_address_pool_name  = local.backend_address_pool_name
+    default_backend_http_settings_name = local.http_setting_name
+    path_rule {
+      name                        = "Challenge_rule"
+      paths                       = ["/.well-known/acme-challenge/*"]
+      redirect_configuration_name = local.redirect_configuration_name
+    }
+  }
+
   # HTTPS rule
   request_routing_rule {
     name                        = "routing_https"
@@ -100,38 +111,18 @@ resource "azurerm_application_gateway" "main" {
 
   redirect_configuration {
     name = local.redirect_configuration_name
-    #target_listener_name = "https-listener"
     target_url           = azurerm_storage_container.container.id
     redirect_type        = "Permanent"
     include_path         = true
     include_query_string = true
   }
 
-  url_path_map {
-    name                               = "challenge"
-    default_backend_address_pool_name  = local.backend_address_pool_name
-    default_backend_http_settings_name = local.http_setting_name
-    path_rule {
-      name                        = "Challenge_rule"
-      paths                       = ["/.well-known/acme-challenge/*"]
-      redirect_configuration_name = local.redirect_configuration_name
-    }
-    depends_on = [
+ 
+
+  depends_on = [
       local_file.appli_commun_main_yml
     ]
-  }
 }
-# resource "azurerm_network_interface" "nic" {
-#   name                = "${local.resource_group_name}-nic-gateway"
-#   location            = local.location
-#   resource_group_name = local.resource_group_name
-
-#   ip_configuration {
-#     name                          = "nic-ipconfig"
-#     subnet_id                     = azurerm_subnet.Subnet["gw"].id
-#     private_ip_address_allocation = "Dynamic"
-#   }
-# }
 
 resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "nic-assoc" {
   network_interface_id    = azurerm_network_interface.Nic_Appli.id
