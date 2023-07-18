@@ -15,33 +15,23 @@ resource "azurerm_application_gateway" "main" {
     subnet_id = azurerm_subnet.Subnet["gw"].id
   }
 
+  frontend_ip_configuration {
+    name                          = local.frontend_ip_configuration_name
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
+  }
+
   frontend_port {
     name = local.frontend_port_name
     port = 80
   }
 
-  frontend_ip_configuration {
-    name = local.frontend_ip_configuration_name
-    #subnet_id                     = azurerm_subnet.Subnet["gw"].id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
+  frontend_port {
+    name = local.frontend_port_name_https
+    port = 443
   }
 
-  backend_address_pool {
-    name = local.backend_address_pool_name
-    #fqdns = "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com"
-    ip_addresses = [azurerm_public_ip.Public_IP_Appli.ip_address]
-  }
-
-  backend_http_settings {
-    name = local.http_setting_name
-    # path                  = ["/.well-known/acme-challenge/*"]
-    cookie_based_affinity = "Disabled"
-    port                  = 3000
-    protocol              = "Http"
-    request_timeout       = 60
-  }
-
+  # HTTP
   http_listener {
     name                           = local.listener_name
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
@@ -49,47 +39,86 @@ resource "azurerm_application_gateway" "main" {
     protocol                       = "Http"
   }
 
-  request_routing_rule {
-    name                       = local.request_routing_rule_name
-    rule_type                  = "Basic"
-    http_listener_name         = local.listener_name
-    backend_address_pool_name  = local.backend_address_pool_name
-    backend_http_settings_name = local.http_setting_name
-    priority                   = 1
+  # HTTPS
+  http_listener {
+    name                           = local.listener_name_https
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name_https
+    frontend_port_name             = local.frontend_port_name_https
+    protocol                       = "Https"
+    ssl_certificate_name           = local.ssl_certificate_name
   }
 
-  # request_routing_rule {
-  #   name                       = "routing_challenge"
-  #   rule_type                  = "PathBaseRouting"
-  #   http_listener_name         = https-listener
-  #   redirect_configuration_name = "redirect-challenge"
-  #   backend_address_pool_name  = local.backend_address_pool_name
-  #   backend_http_settings_name = local.http_setting_name
-  # }
+  ssl_certificate {
+    name                = local.ssl_certificate_name
+    key_vault_secret_id = data.azurerm_key_vault_certificate.cert.secret_id
+  }
 
-  # redirect_configuration {
-  #     name                 = "redirect-config-https"
-  #     target_listener_name = "https-listener"
-  #     redirect_type        = "Permanent"
-  #     include_path         = true
-  #     include_query_string = true
-  #   }
+  backend_address_pool {
+    name         = local.backend_address_pool_name
+    ip_addresses = [azurerm_public_ip.Public_IP_Appli.ip_address]
+  }
+
+  backend_http_settings {
+    name                  = local.http_setting_name
+    cookie_based_affinity = "Disabled"
+    path                  = "/"
+    port                  = 3000
+    protocol              = "Http"
+    request_timeout       = 60
+    probe_name            = "b1e3-gr2-probe"
+  }
+
+  probe {
+    name                = "b1e3-gr2-probe"
+    host                = "127.0.0.1"
+    interval            = 30
+    timeout             = 30
+    unhealthy_threshold = 3
+    protocol            = "Http"
+    port                = 80
+    path                = "/"
+  }
+
+  # HTTP rule
+  request_routing_rule {
+    name               = local.request_routing_rule_name
+    rule_type          = "PathBasedRouting"
+    http_listener_name = local.listener_name
+    url_path_map_name  = "Challenge"
+    priority           = 1
+  }
+
+  # HTTPS rule
+  request_routing_rule {
+    name                        = "routing_https"
+    rule_type                   = "Basic"
+    http_listener_name          = local.listener_name_https
+    redirect_configuration_name = local.redirect_configuration_name
+    backend_address_pool_name   = local.backend_address_pool_name
+    backend_http_settings_name  = local.http_setting_name
+  }
+
+  redirect_configuration {
+    name = local.redirect_configuration_name
+    #target_listener_name = "https-listener"
+    target_url           = azurerm_storage_container.container.id
+    redirect_type        = "Permanent"
+    include_path         = true
+    include_query_string = true
+  }
 
   url_path_map {
-    name                                = "challenge"
-    default_redirect_configuration_name = local.redirect_configuration_name
-
+    name                               = "challenge"
+    default_backend_address_pool_name  = local.backend_address_pool_name
+    default_backend_http_settings_name = local.http_setting_name
     path_rule {
-      name                        = "challenge_rule"
+      name                        = "Challenge_rule"
+      paths                       = ["/.well-known/acme-challenge/*"]
       redirect_configuration_name = local.redirect_configuration_name
-      paths = [
-        "/.well-known/acme-challenge/*",
-      ]
-
-      # depends_on = [
-      #   local_file.appli_commun_main_yml
-      # ]
     }
+    depends_on = [
+      local_file.appli_commun_main_yml
+    ]
   }
 }
 # resource "azurerm_network_interface" "nic" {

@@ -75,13 +75,19 @@ locals {
 
 # Passerelle d'application
 locals {
-  backend_address_pool_name      = "${azurerm_subnet.Subnet["sr1"].name}-beap"
-  frontend_port_name             = "${azurerm_subnet.Subnet["sr1"].name}-feport"
-  frontend_ip_configuration_name = "${azurerm_subnet.Subnet["sr1"].name}-feip"
-  http_setting_name              = "${azurerm_virtual_network.VNet.name}-be-htst"
-  listener_name                  = "${azurerm_virtual_network.VNet.name}-httplstn"
-  request_routing_rule_name      = "${azurerm_virtual_network.VNet.name}-rqrt"
-  redirect_configuration_name    = "${azurerm_virtual_network.VNet.name}-rdrcfg"
+  # HTTP
+  backend_address_pool_name      = "${local.resource_group_name}-beap"
+  frontend_port_name             = "${local.resource_group_name}-porthttp"
+  frontend_ip_configuration_name = "${local.resource_group_name}-feip"
+  http_setting_name              = "${local.resource_group_name}-be-htst"
+  listener_name                  = "${local.resource_group_name}-httplstn"
+  request_routing_rule_name      = "${local.resource_group_name}-rqrt"
+  redirect_configuration_name    = "${local.resource_group_name}-rdrcfg"
+  # HTTPS
+  frontend_port_name_https             = "${local.resource_group_name}-porthttps"
+  listener_name_https                  = "${local.resource_group_name}-httpslstn"
+  frontend_ip_configuration_name_https = "${local.resource_group_name}-feiphttps"
+  ssl_certificate_name                 = "${local.resource_group_name}-cert"
 }
 
 # Scale set
