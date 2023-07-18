@@ -50,7 +50,7 @@ resource "azurerm_application_gateway" "main" {
 
   ssl_certificate {
     name                = local.ssl_certificate_name
-    key_vault_secret_id = data.azurerm_key_vault_certificate.cert.secret_id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
   backend_address_pool {

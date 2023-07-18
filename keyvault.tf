@@ -11,20 +11,30 @@ resource "azurerm_key_vault" "coffre_fort" {
   purge_protection_enabled    = false
   sku_name                    = "standard"
 
-  access_policy {
-    key_vault_id = azurerm_key_vault.cofre_fort.id
-    tenant_id    = data.azurerm_client_config.current.tenant_id
-    object_id    = data.azurerm_client_config.current.object_id
+  # access_policy {
+  #   key_vault_id = azurerm_key_vault.coffre_fort.id
+  #   tenant_id    = data.azurerm_client_config.current.tenant_id
+  #   object_id    = data.azurerm_client_config.current.object_id
 
-    certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
-    key_permissions         = []
-    secret_permissions      = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
-    storage_permissions     = []
-  }
+  #   certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
+  #   key_permissions         = []
+  #   secret_permissions      = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
+  #   storage_permissions     = []
+  # }
 }
 
+resource "azurerm_key_vault_access_policy" "ssl" {
+  key_vault_id = azurerm_key_vault.coffre_fort.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = ["Get", "List", "Encrypt", "Decrypt"]
+  certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
+  secret_permissions      = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
+  storage_permissions     = []
+}
 resource "azurerm_key_vault_certificate" "cert" {
-  name         = local.ssl__certificate_name
+  name         = "ssl__certificate_name"
   key_vault_id = azurerm_key_vault.coffre_fort.id
 
   certificate_policy {
