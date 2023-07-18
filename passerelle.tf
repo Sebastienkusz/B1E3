@@ -75,9 +75,9 @@ resource "azurerm_application_gateway" "main" {
   #     include_query_string = true
   #   }
 
- url_path_map {
-    name                                 = "challenge"
-    default_redirect_configuration_name  = local.redirect_configuration_name
+  url_path_map {
+    name                                = "challenge"
+    default_redirect_configuration_name = local.redirect_configuration_name
 
     path_rule {
       name                        = "challenge_rule"
@@ -86,12 +86,12 @@ resource "azurerm_application_gateway" "main" {
         "/.well-known/acme-challenge/*",
       ]
 
-  # depends_on = [
-  #   local_file.appli_commun_main_yml
-  # ]
+      # depends_on = [
+      #   local_file.appli_commun_main_yml
+      # ]
     }
   }
-}  
+}
 # resource "azurerm_network_interface" "nic" {
 #   name                = "${local.resource_group_name}-nic-gateway"
 #   location            = local.location

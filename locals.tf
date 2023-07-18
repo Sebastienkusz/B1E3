@@ -53,17 +53,17 @@ locals {
 
 # bdd
 locals {
-  server_name            = "mariaserverdb"
-  database_name          = "b1e3gr2mariadb"
-  nsg_name               = "mariadb"
-  nsg_rule_name          = "mariadb_rule"
-  nsg_bdd_rule_mysqlport = "3306"
-  mariadb_admin_password = random_password.admin_mariadb.result
-  mariadb_user           = "wikiuser"
-  mariadb_user_password  = random_password.user_mariadb.result
-  mariadb_private_dns_zone = "privatelink_mariadb"
-  mariadb_private_dns_link = "dns-vnet_link"
-  mariadb_private_endpoint = "private-endpoint"
+  server_name              = "mariaserverdb"
+  database_name            = "b1e3gr2mariadb"
+  nsg_name                 = "mariadb"
+  nsg_rule_name            = "mariadb_rule"
+  nsg_bdd_rule_mysqlport   = "3306"
+  mariadb_admin_password   = random_password.admin_mariadb.result
+  mariadb_user             = "wikiuser"
+  mariadb_user_password    = random_password.user_mariadb.result
+  mariadb_private_dns_zone = "privatelink.mariadb.database.azure.com"
+  mariadb_private_dns_link = "dnsvnetlink"
+  mariadb_private_endpoint = "pep"
 }
 
 # Storage account
