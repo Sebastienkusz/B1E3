@@ -97,6 +97,12 @@ resource "azurerm_linux_virtual_machine" "VM_Appli" {
   }
   tags = local.tags
 
+  provisioner "local-exec" {
+    command     = "/bin/rm -rf /mnt/${azurerm_storage_share.share.name}/${azurerm_storage_share_directory.smb.name}/${local.appli_name}"
+    interpreter = ["bash"]
+    when        = destroy
+  }
+
   depends_on = [
     local_file.admin_rsa_file
   ]
