@@ -84,7 +84,7 @@ locals {
   frontend_port_name_https = "${local.resource_group_name}-porthttps"
   listener_name_https = "${local.resource_group_name}-httpslstn"
   frontend_ip_configuration_name_https = "${local.resource_group_name}-feiphttps"
-  ssl_certificate_name = "${local.resource_group_name}-cert
+  ssl_certificate_name = "${local.resource_group_name}-cert"
 }
 
 locals {

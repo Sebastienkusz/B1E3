@@ -48,9 +48,9 @@ resource "azurerm_application_gateway" "main" {
     ssl_certificate_name           = local.ssl_certificate_name
   }
 
-      #  ssl_certificate {
+ ssl_certificate {
     name                = local.ssl_certificate_name
-    key_vault_secret_id = data.azurerm_key_vault_certificate.cert.secret_id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
   backend_address_pool {
@@ -65,11 +65,10 @@ resource "azurerm_application_gateway" "main" {
     port                  = 3000
     protocol              = "Http"
     request_timeout       = 60
-    probe = 
   }
 
    probe {
-    name                = local.probe_name_app
+    name                = "probe_name"
     host                = "127.0.0.1"
     interval            = 30
     timeout             = 30
@@ -101,7 +100,7 @@ resource "azurerm_application_gateway" "main" {
   redirect_configuration {
       name                 = local.redirect_configuration_name  
       #target_listener_name = "https-listener"
-        target_url =  azurerm_storage_container.container.id
+      target_url =  azurerm_storage_container.container.id
       redirect_type        = "Permanent"
       include_path         = true
       include_query_string = true
@@ -115,8 +114,10 @@ resource "azurerm_application_gateway" "main" {
       name = "Challenge_rule"
       paths = ["/.well-known/acme-challenge/*"]
       redirect_configuration_name = local.redirect_configuration_name
+   }
   }
-    depends_on = [
+
+  depends_on = [
         local_file.appli_commun_main_yml
       ]
 }
