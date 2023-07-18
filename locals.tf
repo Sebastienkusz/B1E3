@@ -92,7 +92,7 @@ locals {
 
 # Scale set
 locals {
-  scale_name                 = "scale_set"
+  scale_name                 = "scale"
   scale_size                 = "Standard_D2s_v3"
   scale_network_name         = "scale_network"
   scale_ip_name              = "scale_ip"

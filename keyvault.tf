@@ -1,8 +1,7 @@
 data "azurerm_client_config" "current" {}
 
-
 resource "azurerm_key_vault" "coffre_fort" {
-  name                        = "b1e3gr2keyvault"
+  name                        = "b1e3gr2vault"
   location                    = local.location
   resource_group_name         = local.resource_group_name
   enabled_for_disk_encryption = true
@@ -10,21 +9,20 @@ resource "azurerm_key_vault" "coffre_fort" {
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
   sku_name                    = "standard"
-
-  access_policy {
-    key_vault_id = azurerm_key_vault.cofre_fort.id
-    tenant_id    = data.azurerm_client_config.current.tenant_id
-    object_id    = data.azurerm_client_config.current.object_id
-
-    certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
-    key_permissions         = []
-    secret_permissions      = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
-    storage_permissions     = []
   }
-}
 
+resource "azurerm_key_vault_access_policy" "ssl" {
+  key_vault_id = azurerm_key_vault.coffre_fort.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = ["Get", "List", "Encrypt", "Decrypt"]
+  certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
+  secret_permissions      = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
+  storage_permissions     = []
+}
 resource "azurerm_key_vault_certificate" "cert" {
-  name         = local.ssl__certificate_name
+  name         = "wikijs"
   key_vault_id = azurerm_key_vault.coffre_fort.id
 
   certificate_policy {
@@ -68,11 +66,11 @@ resource "azurerm_key_vault_certificate" "cert" {
       ]
 
       # subject_alternative_names {
-      #   dns_names = ["internal.contoso.com", "domain.hello.world"]
+      #   dns_names = ["${azurerm_public_ip.Public_IP_Appli.fqdn}"]
       # }
 
-      # subject            = "CN=hello-world"
-      # validity_in_months = 12
+      subject            = "wiki"
+      validity_in_months = 12
     }
   }
 }
@@ -97,3 +95,5 @@ resource "azurerm_storage_blob" "testsb" {
   storage_container_name = azurerm_storage_container.container.name
   type                   = "Append"
 }
+  
+
