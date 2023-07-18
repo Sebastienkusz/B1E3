@@ -121,7 +121,6 @@ resource "azurerm_application_gateway" "main" {
     ]
   }
 }
-
 # resource "azurerm_network_interface" "nic" {
 #   name                = "${local.resource_group_name}-nic-gateway"
 #   location            = local.location

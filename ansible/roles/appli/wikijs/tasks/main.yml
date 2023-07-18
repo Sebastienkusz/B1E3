@@ -48,6 +48,13 @@
     - { From: 'ha: false', To: 'ha: true'}
     - { From: 'dataPath: ./data', To: 'dataPath: {{wikijs_data}}'}
 
+- name: "wikijs smb directory"
+  file:
+    path: "{{wikijs_storage}}"
+    owner: "{{wikijs_user}}"
+    group: "{{wikijs_user}}"
+    state: directory
+
 - name: "Save config.yml in smb storage"
   become: true
   copy:
