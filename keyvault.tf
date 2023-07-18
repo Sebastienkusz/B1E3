@@ -12,7 +12,7 @@ resource "azurerm_key_vault" "coffre_fort" {
   sku_name                    = "standard"
 
   access_policy {
-    key_vault_id = azurerm_key_vault.cofre_fort.id
+    key_vault_id = azurerm_key_vault.coffre_fort.id
     tenant_id    = data.azurerm_client_config.current.tenant_id
     object_id    = data.azurerm_client_config.current.object_id
 

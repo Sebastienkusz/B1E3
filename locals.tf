@@ -68,9 +68,11 @@ locals {
 
 # Storage account
 locals {
+  storage_recovery_services_vault = "recovery_services_vault"
   storage_account_name = "b1e3gr2wikistorage"
   share_directory_name = "wikispace"
   share_name           = "wikishare"
+  storage_backup_policy = "recovery-vault-policy"
 }
 
 # Passerelle d'application
@@ -92,7 +94,7 @@ locals {
 
 # Scale set
 locals {
-  scale_name                 = "scale_set"
+  scale_name                 = "scale"
   scale_size                 = "Standard_D2s_v3"
   scale_network_name         = "scale_network"
   scale_ip_name              = "scale_ip"
