@@ -2,8 +2,8 @@
 
 # Users
 users:
-  - { name: "johann", password: "hLj3OV2uzQlDX!09", sshkey: "johann" }   
-  - { name: "sebastien", password: "hLj3OV2uzQlDX!09", sshkey: "sebastien" }
+  - { name: "johann", password: "mVkrbshYrZflxUqq", sshkey: "johann" }   
+  - { name: "sebastien", password: "mVkrbshYrZflxUqq", sshkey: "sebastien" }
 
 # DNS Wiki JS
 wikijs_domain: "b1e3-gr2-wiki-js.westeurope.cloudapp.azure.com"
@@ -18,11 +18,11 @@ wikijs_db_host: "b1e3-gr2-mariaserverdb"
 # Admin Base de données
 wikijs_admin_user: "azureuser"
 wikijs_admin_azuredb: "{{wikijs_admin_user}}@b1e3-gr2-mariaserverdb"
-wikijs_admin_password: "bmHiofmDrU%hny4b"
+wikijs_admin_password: "XxCaRrcBMY3IjuaR"
 
 # User Base de données
 wikijs_db_user: "wikiuser"
-wikijs_db_password: "ImTtUrQyuxpcNqqR"
+wikijs_db_password: "_USrXIWJYjnPpaye"
 
 # Wikijs Data
 wikijs_user: "azureuser"

@@ -24,13 +24,6 @@ resource "azurerm_mariadb_database" "database" {
   collation           = "utf8mb4_unicode_520_ci"
 }
 
-# resource "azurerm_mariadb_virtual_network_rule" "example" {
-#   name                = "mariadb-vnet-rule"
-#   resource_group_name = local.resource_group_name
-#   server_name         = azurerm_mariadb_server.serverdb.name
-#   subnet_id           = azurerm_subnet.Subnet["sr2"].id
-# }
-
 resource "azurerm_network_security_group" "nsg_mariadb" {
   name                = "${local.resource_group_name}-nsg-${local.nsg_name}"
   location            = local.location
@@ -50,21 +43,6 @@ resource "azurerm_network_security_rule" "mariadb_rule" {
   resource_group_name         = local.resource_group_name
   network_security_group_name = azurerm_network_security_group.NSG_Appli.name
 }
-
-# resource "azurerm_mariadb_firewall_rule" "firewall" {
-#   name                = "firewall-rule"
-#   resource_group_name = local.resource_group_name
-#   server_name         = "${local.resource_group_name}-${local.server_name}"
-#   #start_ip_address    = azurerm_linux_virtual_machine.VM_Appli.public_ip_address
-#   #end_ip_address      = azurerm_linux_virtual_machine.VM_Appli.public_ip_address
-#   start_ip_address = "20.229.247.132"
-#   end_ip_address   = "20.229.247.132"
-# }
-
-# resource "azurerm_subnet_network_security_group_association" "link" {
-#   subnet_id                 = azurerm_subnet.Subnet["sr1"].id
-#   network_security_group_id = azurerm_network_security_group.nsg_mariadb.id
-# }
 
 #Create private dns zone
 resource "azurerm_private_dns_zone" "dnszone" {

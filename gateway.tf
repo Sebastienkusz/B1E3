@@ -1,8 +1,18 @@
+resource "azurerm_user_assigned_identity" "bonne" {
+  location            = local.location
+  name                = "${local.resource_group_name}-user_assigned"
+  resource_group_name = local.resource_group_name
+}
 
 resource "azurerm_application_gateway" "main" {
   name                = "${local.resource_group_name}-gateway"
   resource_group_name = local.resource_group_name
   location            = local.location
+
+  identity {
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.bonne.id]
+  }
 
   sku {
     name     = "Standard_v2"
@@ -42,14 +52,14 @@ resource "azurerm_application_gateway" "main" {
   # HTTPS
   http_listener {
     name                           = local.listener_name_https
-    frontend_ip_configuration_name = local.frontend_ip_configuration_name_https
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name
     frontend_port_name             = local.frontend_port_name_https
     protocol                       = "Https"
-    # ssl_certificate_name           = local.ssl_certificate_name
+    ssl_certificate_name           = "ssl_cert"
   }
 
   ssl_certificate {
-    name                = local.ssl_certificate_name
+    name                = "ssl_cert"
     key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
@@ -85,7 +95,7 @@ resource "azurerm_application_gateway" "main" {
     rule_type          = "PathBasedRouting"
     http_listener_name = local.listener_name
     url_path_map_name  = "Challenge"
-    priority           = 1
+    priority           = 2
   }
 
    url_path_map {
@@ -105,8 +115,9 @@ resource "azurerm_application_gateway" "main" {
     rule_type                   = "Basic"
     http_listener_name          = local.listener_name_https
     redirect_configuration_name = local.redirect_configuration_name
-    backend_address_pool_name   = local.backend_address_pool_name
-    backend_http_settings_name  = local.http_setting_name
+    priority           = 1
+    # backend_address_pool_name   = local.backend_address_pool_name
+    # backend_http_settings_name  = local.http_setting_name
   }
 
   redirect_configuration {
