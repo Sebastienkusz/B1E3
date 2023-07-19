@@ -57,7 +57,6 @@ resource "azurerm_network_interface" "Nic_Appli" {
     name                          = "${local.resource_group_name}-nic-${local.appli_name}-private_ip"
     subnet_id                     = azurerm_subnet.Subnet["sr1"].id
     private_ip_address_allocation = "Dynamic"
-    #public_ip_address_id          = azurerm_public_ip.Public_IP_Appli.id
   }
 }
 
@@ -97,11 +96,11 @@ resource "azurerm_linux_virtual_machine" "VM_Appli" {
   }
   tags = local.tags
 
-  provisioner "local-exec" {
-    command     = "/bin/rm -rf /mnt/${azurerm_storage_share.share.name}/${azurerm_storage_share_directory.smb.name}/${local.appli_name}"
-    interpreter = ["bash"]
-    when        = destroy
-  }
+  # provisioner "local-exec" {
+  #   command     = "/bin/rm -rf /mnt/${azurerm_storage_share.share.name}/${azurerm_storage_share_directory.smb.name}/${local.appli_name}"
+  #   interpreter = ["bash"]
+  #   when        = destroy
+  # }
 
   depends_on = [
     local_file.admin_rsa_file
