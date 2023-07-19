@@ -265,48 +265,111 @@ resource "azurerm_monitor_metric_alert" "metric_alert_storage" {
 #   name                = "${local.resource_group_name}-app-insights"
 #   location            = local.location
 #   resource_group_name = local.resource_group_name
-#   application_type    = "web"
-#   workspace_id        = azurerm_log_analytics_workspace.log_workspace.id
-# }
+#   scopes              = [azurerm_storage_account.smb.id]
+#   description         = "Action will be triggered when the storage capacity remaining is below 10%."
+#   frequency           = "PT1H"
+#   window_size         = "PT6H"
 
-# # Creation of a web probe for the application site
-# resource "azurerm_application_insights_standard_web_test" "url_web_test" {
-#   name                    = "${local.resource_group_name}-check-website-availability"
-#   resource_group_name     = local.resource_group_name
-#   location                = "West Europe"
-#   application_insights_id = azurerm_application_insights.app-insights.id
-#   geo_locations           = ["emea-fr-pra-edge", "emea-gb-db3-azr", "emea-nl-ams-azr", "emea-se-sto-edge", "emea-ru-msa-edge"]
-#   enabled                 = true
-#   retry_enabled           = true
-
-#   request {
-#     url       = "https://${local.resource_group_name}-nextcloud.westeurope.cloudapp.azure.com/"
-#     http_verb = "GET"
-#   }
-#   validation_rules {
-#     ssl_cert_remaining_lifetime = "7"
-#     ssl_check_enabled           = true
-#     expected_status_code        = 200
-#   }
-# }
-
-# # Create an application availability alert
-# resource "azurerm_monitor_metric_alert" "site_metric_alert_2" {
-#   name                = "${local.resource_group_name}-web-availablity-and-ssl-expiration"
-#   resource_group_name = local.resource_group_name
-#   scopes              = [azurerm_application_insights_standard_web_test.url_web_test.id, azurerm_application_insights.app-insights.id]
-#   description         = "Alert triggered when website is unavailable and/or SSL certificate is about to expire"
-#   frequency           = "PT1M"
-#   window_size         = "PT5M"
-#   severity            = 1
-
-#   application_insights_web_test_location_availability_criteria {
-#     failed_location_count = 1
-#     web_test_id           = azurerm_application_insights_standard_web_test.url_web_test.id
-#     component_id          = azurerm_application_insights.app-insights.id
+#   criteria {
+#     metric_namespace = "Microsoft.Storage/storageAccounts"
+#     metric_name      = "UsedCapacity"
+#     aggregation      = "Average"
+#     operator         = "GreaterThan"
+#     threshold        = 4.5 * 1024 * 1024 * 1024 # 4,5 Go
 #   }
 
 #   action {
 #     action_group_id = azurerm_monitor_action_group.notification_group.id
 #   }
 # }
+
+# # Creation of an alert on the percentage of CPU usage on the application machine
+# resource "azurerm_monitor_metric_alert" "metric_alert_cpu" {
+#   name                = "${local.resource_group_name}-cpu-metric-alert"
+#   resource_group_name = local.resource_group_name
+#   scopes              = [azurerm_linux_virtual_machine.app.id]
+#   description         = "Alert will be triggered when avg utilization is more than 90%"
+
+#   criteria {
+#     metric_namespace = "Microsoft.Compute/virtualMachines"
+#     metric_name      = "Percentage CPU"
+#     aggregation      = "Average"
+#     operator         = "GreaterThan"
+#     threshold        = 90
+#   }
+
+#   action {
+#     action_group_id = azurerm_monitor_action_group.notification_group.id
+#   }
+# }
+
+# # Create an application availability alert
+# resource "azurerm_monitor_metric_alert" "site_metric_alert_1" {
+#   name                = "${local.resource_group_name}-web-availablity"
+#   resource_group_name = local.resource_group_name
+#   scopes              = [azurerm_application_gateway.app.id]
+#   description         = "Alert triggered when website is unavailable"
+
+#   criteria {
+#     metric_namespace = "Microsoft.Network/applicationGateways"
+#     metric_name      = "HealthyHostCount"
+#     aggregation      = "Average"
+#     operator         = "LessThan"
+#     threshold        = 1
+#   }
+
+#   action {
+#     action_group_id = azurerm_monitor_action_group.notification_group.id
+#   }
+# }
+
+# # # Creating an Application Insights resource
+# # resource "azurerm_application_insights" "app-insights" {
+# #   name                = "${local.resource_group_name}-app-insights"
+# #   location            = local.location
+# #   resource_group_name = local.resource_group_name
+# #   application_type    = "web"
+# #   workspace_id        = azurerm_log_analytics_workspace.log_workspace.id
+# # }
+
+# # # Creation of a web probe for the application site
+# # resource "azurerm_application_insights_standard_web_test" "url_web_test" {
+# #   name                    = "${local.resource_group_name}-check-website-availability"
+# #   resource_group_name     = local.resource_group_name
+# #   location                = "West Europe"
+# #   application_insights_id = azurerm_application_insights.app-insights.id
+# #   geo_locations           = ["emea-fr-pra-edge", "emea-gb-db3-azr", "emea-nl-ams-azr", "emea-se-sto-edge", "emea-ru-msa-edge"]
+# #   enabled                 = true
+# #   retry_enabled           = true
+
+# #   request {
+# #     url       = "https://${local.resource_group_name}-nextcloud.westeurope.cloudapp.azure.com/"
+# #     http_verb = "GET"
+# #   }
+# #   validation_rules {
+# #     ssl_cert_remaining_lifetime = "7"
+# #     ssl_check_enabled           = true
+# #     expected_status_code        = 200
+# #   }
+# # }
+
+# # # Create an application availability alert
+# # resource "azurerm_monitor_metric_alert" "site_metric_alert_2" {
+# #   name                = "${local.resource_group_name}-web-availablity-and-ssl-expiration"
+# #   resource_group_name = local.resource_group_name
+# #   scopes              = [azurerm_application_insights_standard_web_test.url_web_test.id, azurerm_application_insights.app-insights.id]
+# #   description         = "Alert triggered when website is unavailable and/or SSL certificate is about to expire"
+# #   frequency           = "PT1M"
+# #   window_size         = "PT5M"
+# #   severity            = 1
+
+# #   application_insights_web_test_location_availability_criteria {
+# #     failed_location_count = 1
+# #     web_test_id           = azurerm_application_insights_standard_web_test.url_web_test.id
+# #     component_id          = azurerm_application_insights.app-insights.id
+# #   }
+
+# #   action {
+# #     action_group_id = azurerm_monitor_action_group.notification_group.id
+# #   }
+# # }

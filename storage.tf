@@ -1,9 +1,9 @@
-# resource "azurerm_recovery_services_vault" "vault" {
-#   name                = "${local.resource_group_name}-${local.storage_recovery_services_vault}"
-#   location            = local.location
-#   resource_group_name = local.resource_group_name
-#   sku                 = "Standard"
-# }
+resource "azurerm_recovery_services_vault" "vault" {
+  name                = "${local.storage_recovery_services_vault}"
+  location            = local.location
+  resource_group_name = local.resource_group_name
+  sku                 = "Standard"
+}
 
 
 resource "azurerm_storage_account" "wiki-account" {
@@ -38,31 +38,31 @@ share_name: "${local.storage_account_name}"
 EOT
 }
 
-# resource "azurerm_backup_container_storage_account" "protection-container" {
-#   resource_group_name = local.resource_group_name
-#   recovery_vault_name = azurerm_recovery_services_vault.vault.name
-#   storage_account_id  = azurerm_storage_account.wiki-account.id
-# }
+resource "azurerm_backup_container_storage_account" "protection-container" {
+  resource_group_name = local.resource_group_name
+  recovery_vault_name = azurerm_recovery_services_vault.vault.name
+  storage_account_id  = azurerm_storage_account.wiki-account.id
+}
 
-# resource "azurerm_backup_policy_file_share" "storage-policy" {
-#   name                = "${local.resource_group_name}-${local.storage_backup_policy}"
-#   resource_group_name = local.resource_group_name
-#   recovery_vault_name = azurerm_recovery_services_vault.vault.name
+resource "azurerm_backup_policy_file_share" "storage-policy" {
+  name                = "${local.resource_group_name}-${local.storage_backup_policy}"
+  resource_group_name = local.resource_group_name
+  recovery_vault_name = azurerm_recovery_services_vault.vault.name
 
-#   backup {
-#     frequency = "Daily"
-#     time      = "19:00"
-#   }
+  backup {
+    frequency = "Daily"
+    time      = "19:00"
+  }
 
-#   retention_daily {
-#     count = 10
-#   }
-# }
+  retention_daily {
+    count = 10
+  }
+}
 
-# resource "azurerm_backup_protected_file_share" "share1" {
-#   resource_group_name       = local.resource_group_name
-#   recovery_vault_name       = azurerm_recovery_services_vault.vault.name
-#   source_storage_account_id = azurerm_backup_container_storage_account.protection-container.storage_account_id
-#   source_file_share_name    = azurerm_storage_share.share.name
-#   backup_policy_id          = azurerm_backup_policy_file_share.storage-policy.id
-# }
+resource "azurerm_backup_protected_file_share" "share1" {
+  resource_group_name       = local.resource_group_name
+  recovery_vault_name       = azurerm_recovery_services_vault.vault.name
+  source_storage_account_id = azurerm_backup_container_storage_account.protection-container.storage_account_id
+  source_file_share_name    = azurerm_storage_share.share.name
+  backup_policy_id          = azurerm_backup_policy_file_share.storage-policy.id
+}

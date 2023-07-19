@@ -70,7 +70,7 @@ locals {
 
 # Storage account
 locals {
-  storage_recovery_services_vault = "recovery_services_vault"
+  storage_recovery_services_vault = "recoveryservicesvault"
   storage_account_name            = "b1e3gr2wikistorage"
   share_directory_name            = "wikispace"
   share_name                      = "wikishare"
