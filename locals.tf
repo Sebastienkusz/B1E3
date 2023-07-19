@@ -11,8 +11,10 @@ locals {
 locals {
   user1_name   = "johann"
   user1_sshkey = "johann"
+  user1_email = "jlabat@simplonformations.onmicrosoft.com"
   user2_name   = "sebastien"
   user2_sshkey = "sebastien"
+  user2_email = "skusz@simplonformations.onmicrosoft.com"
 }
 
 # Network (only 3 subnets)

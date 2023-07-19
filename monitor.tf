@@ -1,99 +1,3 @@
-# data "azurerm_client_config" "current" {
-# }
-
-# resource "azurerm_log_analytics_workspace" "example" {
-#   name                = "b1e3-gr2-workspace"
-#   location            = local.location
-#   resource_group_name = local.resource_group_name
-# }
-
-# resource "azurerm_monitor_action_group" "eye" {
-#   name                = "b1e3-gr2-monitor_alert"
-#   resource_group_name = local.resource_group_name
-#   short_name          = "p0action"
-
-#   arm_role_receiver {
-#     name                    = "armroleaction"
-#     role_id                 = "de139f84-1756-47ae-9be6-808fbbe84772"
-#     use_common_alert_schema = true
-#   }
-
-# #   automation_runbook_receiver {
-# #     name                    = "action_name_1"
-# #     automation_account_id   = "/subscriptions/c56aea2c-50de-4adc-9673-6a8008892c21/resourceGroups/rg-runbooks/providers/Microsoft.Automation/automationAccounts/aaa001"
-# #     runbook_name            = "my runbook"
-# #     webhook_resource_id     = "/subscriptions/c56aea2c-50de-4adc-9673-6a8008892c21/resourceGroups/rg-runbooks/providers/Microsoft.Automation/automationAccounts/aaa001/webHooks/webhook_alert"
-# #     is_global_runbook       = true
-# #     service_uri             = "https://s13events.azure-automation.net/webhooks?token=randomtoken"
-# #     use_common_alert_schema = true
-# #   }
-
-# #   azure_app_push_receiver {
-# #     name          = "pushtoadmin"
-# #     email_address = "admin@contoso.com"
-# #   }
-
-# #   azure_function_receiver {
-# #     name                     = "funcaction"
-# #     function_app_resource_id = "/subscriptions/c56aea2c-50de-4adc-9673-6a8008892c21/resourceGroups/rg-funcapp/providers/Microsoft.Web/sites/funcapp"
-# #     function_name            = "myfunc"
-# #     http_trigger_url         = "https://example.com/trigger"
-# #     use_common_alert_schema  = true
-# #   }
-
-#   email_receiver {
-#     name          = "sendtoadmin1"
-#     email_address = "jlabat@simplonformations.onmicrosoft.com"
-#   }
-
-#   email_receiver {
-#     name                    = "sendtoadmin2"
-#     email_address           = "devops@contoso.com"
-#     use_common_alert_schema = true
-#   }
-
-#   event_hub_receiver {
-#     name                    = "sendtoeventhub"
-#     event_hub_namespace     = "eventhubnamespace"
-#     event_hub_name          = "eventhub1"
-#     subscription_id         = "c56aea2c-50de-4adc-9673-6a8008892c21"
-#     use_common_alert_schema = false
-#   }
-
-#   itsm_receiver {
-#     name                 = "createorupdateticket"
-#     workspace_id         = "${data.azurerm_client_config.current.subscription_id}|${azurerm_log_analytics_workspace.example.workspace_id}"
-#     connection_id        = "53de6956-42b4-41ba-be3c-b154cdf17b13"
-#     ticket_configuration = "{\"PayloadRevision\":0,\"WorkItemType\":\"Incident\",\"UseTemplate\":false,\"WorkItemData\":\"{}\",\"CreateOneWIPerCI\":false}"
-#     region               = "southcentralus"
-#   }
-
-#   logic_app_receiver {
-#     name                    = "logicappaction"
-#     resource_id             = "/subscriptions/c56aea2c-50de-4adc-9673-6a8008892c21/resourceGroups/rg-logicapp/providers/Microsoft.Logic/workflows/logicapp"
-#     callback_url            = "https://logicapptriggerurl/..."
-#     use_common_alert_schema = true
-#   }
-
-#   sms_receiver {
-#     name         = "oncallmsg"
-#     country_code = "1"
-#     phone_number = "1231231234"
-#   }
-
-#   voice_receiver {
-#     name         = "remotesupport"
-#     country_code = "86"
-#     phone_number = "13888888888"
-#   }
-
-#   webhook_receiver {
-#     name                    = "callmyapiaswell"
-#     service_uri             = "http://example.com/alert"
-#     use_common_alert_schema = true
-#   }
-# }
-
 # Creating a Log Analytics workspace 
 resource "azurerm_log_analytics_workspace" "log_workspace" {
   name                = "${local.resource_group_name}-vm-${local.appli_name}-workspace"
@@ -128,7 +32,7 @@ resource "azurerm_monitor_diagnostic_setting" "mariadb_diagnostic" {
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
 
   enabled_log {
-    category = "MariadbSQLLogs" # "PostgreSQLLogs"
+    category = "MySqlSlowLogs"
   }
   metric {
     category = "AllMetrics"
@@ -150,7 +54,7 @@ resource "azurerm_monitor_diagnostic_setting" "storage_diagnostic" {
 
 # Creation of a workbook containing metrics for the application machine, database and storage account
 resource "azurerm_application_insights_workbook" "workbook" {
-  name                = "85b3e8bb-fc93-40be-83f2-98f6bec18ba0"
+  name                =  "69b1e3bb-fc93-40be-83f2-98f6bec18ba0"
   resource_group_name = local.resource_group_name
   location            = local.location
   display_name        = "${local.resource_group_name}-workbook"
@@ -208,18 +112,18 @@ resource "azurerm_application_insights_workbook" "workbook" {
           "version" : "MetricsItem/2.0",
           "size" : 0,
           "chartType" : 2,
-          "resourceType" : "microsoft.dbforpostgresql/servers",
+          "resourceType" : "microsoft.dbformariadb/servers",
           "metricScope" : 0,
           "resourceIds" : [
-            "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.DBforPostgreSQL/servers/${local.db_app_name}-${local.app_name}"
+            "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.DBforMariaDB/servers/${local.resource_group_name}-${local.server_name}"
           ],
           "timeContext" : {
             "durationMs" : 1800000
           },
           "metrics" : [
             {
-              "namespace" : "microsoft.dbforpostgresql/servers",
-              "metric" : "microsoft.dbforpostgresql/servers-Saturation-backup_storage_used",
+              "namespace" : "microsoft.dbformariadb/servers",
+              "metric" : "microsoft.dbformariadb/servers-Saturation-backup_storage_used",
               "aggregation" : 4,
               "splitBy" : null,
               "columnName" : "Backup storage "
@@ -241,7 +145,7 @@ resource "azurerm_application_insights_workbook" "workbook" {
           "resourceType" : "microsoft.storage/storageaccounts",
           "metricScope" : 0,
           "resourceIds" : [
-            "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.Storage/storageAccounts/b1e3gr0smb"
+            "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${local.storage_account_name}"
           ],
           "timeContext" : {
             "durationMs" : 3600000
@@ -266,7 +170,6 @@ resource "azurerm_application_insights_workbook" "workbook" {
     ],
     "$schema" : "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
   })
-
 }
 
 # Creation of an action group to manage alert notifications
@@ -275,21 +178,29 @@ resource "azurerm_monitor_action_group" "notification_group" {
   resource_group_name = local.resource_group_name
   short_name          = "notifgrp"
 
-  email_receiver {
-    name          = "emaildom"
-    email_address = "dtauzin.ext@simplon.co"
+    email_receiver {
+    name          = "email-${local.user1_name}"
+    email_address = "${local.user1_email}"
   }
-  email_receiver {
-    name          = "emailjous"
-    email_address = "jpaillusseau.ext@simplon.co"
+    email_receiver {
+    name          = "email-${local.user2_name}"
+    email_address = "${local.user2_email}"
   }
+  # email_receiver {
+  #   name          = "emaildom"
+  #   email_address = "dtauzin.ext@simplon.co"
+  # }
+  # email_receiver {
+  #   name          = "emailjous"
+  #   email_address = "jpaillusseau.ext@simplon.co"
+  # }
 }
 
 # Create an alert on the remaining storage capacity of the storage account
 resource "azurerm_monitor_metric_alert" "metric_alert_storage" {
   name                = "${local.resource_group_name}-storage-metric-alert"
   resource_group_name = local.resource_group_name
-  scopes              = [azurerm_storage_account.smb.id]
+  scopes              = [azurerm_storage_account.wiki-account.id]
   description         = "Action will be triggered when the storage capacity remaining is below 10%."
   frequency           = "PT1H"
   window_size         = "PT6H"
@@ -307,46 +218,48 @@ resource "azurerm_monitor_metric_alert" "metric_alert_storage" {
   }
 }
 
-# Creation of an alert on the percentage of CPU usage on the application machine
-resource "azurerm_monitor_metric_alert" "metric_alert_cpu" {
-  name                = "${local.resource_group_name}-cpu-metric-alert"
-  resource_group_name = local.resource_group_name
-  scopes              = [azurerm_linux_virtual_machine.app.id]
-  description         = "Alert will be triggered when avg utilization is more than 90%"
+# # Creation of an alert on the percentage of CPU usage on the application machine
+# resource "azurerm_monitor_metric_alert" "metric_alert_cpu" {
+#   name                = "${local.resource_group_name}-cpu-metric-alert"
+#   resource_group_name = local.resource_group_name
+#   scopes              = [azurerm_linux_virtual_machine.app.id]
+#   description         = "Alert will be triggered when avg utilization is more than 90%"
 
-  criteria {
-    metric_namespace = "Microsoft.Compute/virtualMachines"
-    metric_name      = "Percentage CPU"
-    aggregation      = "Average"
-    operator         = "GreaterThan"
-    threshold        = 90
-  }
+#   criteria {
+#     metric_namespace = "Microsoft.Compute/virtualMachines"
+#     metric_name      = "Percentage CPU"
+#     aggregation      = "Average"
+#     operator         = "GreaterThan"
+#     threshold        = 90
+#   }
 
-  action {
-    action_group_id = azurerm_monitor_action_group.notification_group.id
-  }
-}
+#   action {
+#     action_group_id = azurerm_monitor_action_group.notification_group.id
+#   }
+# }
 
-# Create an application availability alert
-resource "azurerm_monitor_metric_alert" "site_metric_alert_1" {
-  name                = "${local.resource_group_name}-web-availablity"
-  resource_group_name = local.resource_group_name
-  scopes              = [azurerm_application_gateway.app.id]
-  description         = "Alert triggered when website is unavailable"
+# # Create an application availability alert
+# resource "azurerm_monitor_metric_alert" "site_metric_alert_1" {
+#   name                = "${local.resource_group_name}-web-availablity"
+#   resource_group_name = local.resource_group_name
+#   scopes              = [azurerm_application_gateway.app.id]
+#   description         = "Alert triggered when website is unavailable"
 
-  criteria {
-    metric_namespace = "Microsoft.Network/applicationGateways"
-    metric_name      = "HealthyHostCount"
-    aggregation      = "Average"
-    operator         = "LessThan"
-    threshold        = 1
-  }
+#   criteria {
+#     metric_namespace = "Microsoft.Network/applicationGateways"
+#     metric_name      = "HealthyHostCount"
+#     aggregation      = "Average"
+#     operator         = "LessThan"
+#     threshold        = 1
+#   }
 
-  action {
-    action_group_id = azurerm_monitor_action_group.notification_group.id
-  }
-}
+#   action {
+#     action_group_id = azurerm_monitor_action_group.notification_group.id
+#   }
+# }
 
+
+#------------------------------------------------------------------------------------
 # # Creating an Application Insights resource
 # resource "azurerm_application_insights" "app-insights" {
 #   name                = "${local.resource_group_name}-app-insights"
