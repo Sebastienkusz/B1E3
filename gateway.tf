@@ -117,8 +117,6 @@ resource "azurerm_application_gateway" "main" {
     include_query_string = true
   }
 
- 
-
   depends_on = [
       local_file.appli_commun_main_yml
     ]
