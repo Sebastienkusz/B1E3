@@ -21,9 +21,10 @@ resource "azurerm_key_vault" "coffre_fort" {
   }
 
 resource "azurerm_key_vault_access_policy" "ssl" {
+  for_each = data.azuread_user.admin
   key_vault_id = azurerm_key_vault.coffre_fort.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_client_config.current.object_id
+  object_id    = each.value.object_id
 
   key_permissions = ["Get", "List", "Encrypt", "Decrypt"]
   certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
