@@ -68,9 +68,11 @@ locals {
 
 # Storage account
 locals {
-  storage_account_name = "b1e3gr2wikistorage"
-  share_directory_name = "wikispace"
-  share_name           = "wikishare"
+  storage_recovery_services_vault = "recovery_services_vault"
+  storage_account_name            = "b1e3gr2wikistorage"
+  share_directory_name            = "wikispace"
+  share_name                      = "wikishare"
+  storage_backup_policy           = "recovery-vault-policy"
 }
 
 # Passerelle d'application

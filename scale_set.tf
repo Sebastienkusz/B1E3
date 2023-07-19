@@ -8,7 +8,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "scale" {
   instances                       = 2
   admin_username                  = local.admin
   disable_password_authentication = true
-  #encryption_at_host_enabled      = true
 
   admin_ssh_key {
     username   = local.admin
