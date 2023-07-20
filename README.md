@@ -78,6 +78,6 @@ Quand **Ansible** est installé, on lance les playbooks pour les configurations 
 - 1 **Log analytics** (b1e3-gr2-log)
   
 ## Topologie
-![schéma1 4](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/3c86cf55-d2db-4ff4-8340-d2cea0c128ce)
+![shéma](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/e75dc5e9-5e7f-4e14-a23c-a8b9fa4d5a53)
 
 
