@@ -1,7 +1,7 @@
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "coffre_fort" {
-  name                        = "b1e3gr2vault"
+  name                        = "b1e3gr2vault2"
   location                    = local.location
   resource_group_name         = local.resource_group_name
   enabled_for_disk_encryption = true
@@ -23,65 +23,65 @@ resource "azurerm_key_vault_access_policy" "ssl" {
   storage_permissions     = []
 }
 
-resource "azurerm_key_vault_certificate" "cert" {
-  name         = "wikijs"
-  key_vault_id = azurerm_key_vault.coffre_fort.id
+# resource "azurerm_key_vault_certificate" "cert" {
+#   name         = "wikijs"
+#   key_vault_id = azurerm_key_vault.coffre_fort.id
 
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
+#   certificate_policy {
+#     issuer_parameters {
+#       name = "Self"
+#     }
 
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = true
-    }
+#     key_properties {
+#       exportable = true
+#       key_size   = 2048
+#       key_type   = "RSA"
+#       reuse_key  = true
+#     }
 
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
+#     lifetime_action {
+#       action {
+#         action_type = "AutoRenew"
+#       }
 
-      trigger {
-        days_before_expiry = 6
-      }
-    }
+#       trigger {
+#         days_before_expiry = 6
+#       }
+#     }
 
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
+#     secret_properties {
+#       content_type = "application/x-pkcs12"
+#     }
 
-    x509_certificate_properties {
-      # Server Authentication = 1.3.6.1.5.5.7.3.1
-      # Client Authentication = 1.3.6.1.5.5.7.3.2
-      extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
+#     x509_certificate_properties {
+#       # Server Authentication = 1.3.6.1.5.5.7.3.1
+#       # Client Authentication = 1.3.6.1.5.5.7.3.2
+#       extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
 
-      key_usage = [
-        "cRLSign",
-        "dataEncipherment",
-        "digitalSignature",
-        "keyAgreement",
-        "keyCertSign",
-        "keyEncipherment",
-      ]
+#       key_usage = [
+#         "cRLSign",
+#         "dataEncipherment",
+#         "digitalSignature",
+#         "keyAgreement",
+#         "keyCertSign",
+#         "keyEncipherment",
+#       ]
 
-      # subject_alternative_names {
-      #   dns_names = ["${azurerm_public_ip.Public_IP_Appli.fqdn}"]
-      # }
+#       # subject_alternative_names {
+#       #   dns_names = ["${azurerm_public_ip.Public_IP_Appli.fqdn}"]
+#       # }
 
-      subject            = "CN=http://b1e3-gr2-wikijs.westeurope.cloudapp.azure.com"
-      validity_in_months = 3
-    }
-  }
-}
+#       subject            = "CN=http://b1e3-gr2-wikijs.westeurope.cloudapp.azure.com"
+#       validity_in_months = 3
+#     }
+#   }
+# }
 
-resource "azurerm_key_vault_secret" "example" {
-  name         = "secret-sauce"
-  value        = "szechuan"
-  key_vault_id = azurerm_key_vault.coffre_fort.id
-}
+# resource "azurerm_key_vault_secret" "example" {
+#   name         = "secret-sauce"
+#   value        = "szechuan"
+#   key_vault_id = azurerm_key_vault.coffre_fort.id
+# }
 
 resource "azurerm_storage_account" "key_storage" {
   name                     = "b1e3gr2keyvaultstorage"
