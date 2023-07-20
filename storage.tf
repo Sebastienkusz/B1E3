@@ -20,11 +20,11 @@ resource "azurerm_storage_share" "share" {
   quota                = 5
 }
 
-resource "azurerm_storage_share_directory" "smb" {
-  name                 = "${local.resource_group_name}-${local.share_directory_name}"
-  share_name           = azurerm_storage_share.share.name
-  storage_account_name = azurerm_storage_account.wiki-account.name
-}
+# resource "azurerm_storage_share_directory" "smb" {
+#   name                 = "${local.resource_group_name}-${local.share_directory_name}"
+#   share_name           = azurerm_storage_share.share.name
+#   storage_account_name = azurerm_storage_account.wiki-account.name
+# }
 
 # Create storage/defaults variables file for ansible
 resource "local_file" "storage_main_yml" {
