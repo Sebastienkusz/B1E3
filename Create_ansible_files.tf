@@ -53,7 +53,6 @@ resource "local_file" "appli_commun_main_yml" {
       tpl_admin_vm          = local.admin
       tpl_app_name          = local.appli_name
       tpl_storage_share     = azurerm_storage_share.share.name
-      tpl_storage_directory = azurerm_storage_share_directory.smb.name
       tpl_archive_name      = local.appli_archive_name
       tpl_archive_url       = local.appli_archive_url
       tpl_app_service       = local.appli_service

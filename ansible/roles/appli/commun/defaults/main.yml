@@ -34,7 +34,7 @@ wikijs_name: "wiki-js"
 # Dossiers d'installation
 wikijs_tar_directory: "/tmp/"
 wikijs_directory: "/var/www/{{wikijs_name}}/"
-wikijs_storage: "/mnt/b1e3-gr2-wikishare/b1e3-gr2-wikispace/{{wikijs_name}}/"
+wikijs_storage: "/mnt/b1e3-gr2-wikishare/{{wikijs_name}}/"
 wikijs_data: "{{wikijs_storage}}data"
 
 # Url des sources Mediawiki
