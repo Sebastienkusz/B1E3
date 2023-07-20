@@ -1,5 +1,5 @@
 resource "azurerm_recovery_services_vault" "vault" {
-  name                = "${local.storage_recovery_services_vault}"
+  name                = local.storage_recovery_services_vault
   location            = local.location
   resource_group_name = local.resource_group_name
   sku                 = "Standard"

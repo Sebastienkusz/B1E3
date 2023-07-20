@@ -54,7 +54,7 @@ resource "azurerm_monitor_diagnostic_setting" "storage_diagnostic" {
 
 # Creation of a workbook containing metrics for the application machine, database and storage account
 resource "azurerm_application_insights_workbook" "workbook" {
-  name                =  "69b1e3bb-fc93-40be-83f2-98f6bec18ba0"
+  name                = "69b1e3bb-fc93-40be-83f2-98f6bec18ba0"
   resource_group_name = local.resource_group_name
   location            = local.location
   display_name        = "${local.resource_group_name}-workbook"
@@ -178,13 +178,13 @@ resource "azurerm_monitor_action_group" "notification_group" {
   resource_group_name = local.resource_group_name
   short_name          = "notifgrp"
 
-    email_receiver {
-    name          = "email-${local.user1_name}"
-    email_address = "${local.user1_email}"
-  }
-    email_receiver {
-    name          = "email-${local.user2_name}"
-    email_address = "${local.user2_email}"
+  dynamic "email_receiver" {
+    for_each = local.users
+
+    content {
+      name          = "email-${email_receiver.value.name}"
+      email_address = email_receiver.value.email
+    }
   }
   # email_receiver {
   #   name          = "emaildom"
