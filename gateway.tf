@@ -10,7 +10,7 @@ resource "azurerm_application_gateway" "main" {
   location            = local.location
 
   identity {
-    type = "UserAssigned"
+    type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.bonne.id]
   }
 
@@ -95,10 +95,10 @@ resource "azurerm_application_gateway" "main" {
     rule_type          = "PathBasedRouting"
     http_listener_name = local.listener_name
     url_path_map_name  = "Challenge"
-    priority           = 2
+    priority           = 1
   }
 
-   url_path_map {
+  url_path_map {
     name                               = "Challenge"
     default_backend_address_pool_name  = local.backend_address_pool_name
     default_backend_http_settings_name = local.http_setting_name
@@ -115,13 +115,13 @@ resource "azurerm_application_gateway" "main" {
     rule_type                   = "Basic"
     http_listener_name          = local.listener_name_https
     redirect_configuration_name = local.redirect_configuration_name
-    priority           = 2
+    priority                    = 2
     # backend_address_pool_name   = local.backend_address_pool_name
     # backend_http_settings_name  = local.http_setting_name
   }
 
   redirect_configuration {
-    name = local.redirect_configuration_name
+    name                 = local.redirect_configuration_name
     target_url           = azurerm_storage_container.container.id
     redirect_type        = "Permanent"
     include_path         = true
@@ -129,8 +129,8 @@ resource "azurerm_application_gateway" "main" {
   }
 
   depends_on = [
-      local_file.appli_commun_main_yml
-    ]
+    local_file.appli_commun_main_yml
+  ]
 }
 
 resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "nic-assoc" {

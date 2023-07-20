@@ -1,16 +1,7 @@
-  # provider "azurerm" {
-  #   features {
-  #     key_vault {
-  #       purge_soft_deleted_secrets_on_destroy = true
-  #       recover_soft_deleted_secrets          = true
-  #     }
-  #   }
-  # }
-
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "coffre_fort" {
-  name                        = "b1e3gr2vault-2"
+  name                        = "b1e3gr2vault"
   location                    = local.location
   resource_group_name         = local.resource_group_name
   enabled_for_disk_encryption = true
@@ -18,14 +9,15 @@ resource "azurerm_key_vault" "coffre_fort" {
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
   sku_name                    = "standard"
-  }
+}
 
 resource "azurerm_key_vault_access_policy" "ssl" {
+  for_each     = data.azuread_user.admin
   key_vault_id = azurerm_key_vault.coffre_fort.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_client_config.current.object_id
+  object_id    = each.value.object_id
 
-  key_permissions = ["Get", "List", "Encrypt", "Decrypt"]
+  key_permissions         = ["Get", "List", "Encrypt", "Decrypt"]
   certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"]
   secret_permissions      = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
   storage_permissions     = []
@@ -79,7 +71,7 @@ resource "azurerm_key_vault_certificate" "cert" {
       #   dns_names = ["${azurerm_public_ip.Public_IP_Appli.fqdn}"]
       # }
 
-      subject            = "CN=http://b1e3-gr2-wikijs.westeurope.cloudapp.azure.com" 
+      subject            = "CN=http://b1e3-gr2-wikijs.westeurope.cloudapp.azure.com"
       validity_in_months = 3
     }
   }
@@ -111,5 +103,3 @@ resource "azurerm_storage_blob" "testsb" {
   storage_container_name = azurerm_storage_container.container.name
   type                   = "Append"
 }
-  
-

@@ -9,10 +9,18 @@ locals {
 
 # Add users (only 2 users)
 locals {
-  user1_name   = "johann"
-  user1_sshkey = "johann"
-  user2_name   = "sebastien"
-  user2_sshkey = "sebastien"
+  users = {
+    user1 = {
+      name   = "johann"
+      sshkey = "johann"
+      email  = "jlabat@simplonformations.onmicrosoft.com"
+    }
+    user2 = {
+      name   = "sebastien"
+      sshkey = "sebastien"
+      email  = "skusz@simplonformations.onmicrosoft.com"
+    }
+  }
 }
 
 # Network (only 3 subnets)
