@@ -85,7 +85,7 @@ resource "azurerm_application_insights_workbook" "workbook" {
               "resourceType": "microsoft.storage/storageaccounts",
               "metricScope": 0,
               "resourceIds": [
-                "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${storage_account_name}"
+                "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${local.storage_account_name}"
               ],
               "timeContext": {
                 "durationMs": 3600000
@@ -115,7 +115,7 @@ resource "azurerm_application_insights_workbook" "workbook" {
               "resourceType": "microsoft.storage/storageaccounts",
               "metricScope": 0,
               "resourceIds": [
-                "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${storage_account_name}"
+                "/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${local.storage_account_name}"
               ],
               "timeContext": {
                 "durationMs": 3600000

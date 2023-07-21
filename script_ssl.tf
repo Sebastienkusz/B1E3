@@ -56,7 +56,6 @@ resource "local_file" "script_ssl_cert" {
   #!/bin/bash -x
 
   certbot certonly \
-          --test-cert \
           --non-interactive \
           --agree-tos \
           --manual \
