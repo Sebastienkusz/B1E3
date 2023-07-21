@@ -58,7 +58,7 @@ Host bastion
         ForwardAgent yes
 
 Host appli
-        Hostname 10.1.0.8
+        Hostname 10.1.0.4
         User $user
         Port 22
         ProxyJump bastion
