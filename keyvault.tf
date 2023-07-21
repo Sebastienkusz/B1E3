@@ -23,6 +23,17 @@ resource "azurerm_key_vault_access_policy" "ssl" {
   storage_permissions     = []
 }
 
+resource "azurerm_key_vault_access_policy" "tls" {
+  key_vault_id = azurerm_key_vault.coffre_fort.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = azurerm_user_assigned_identity.bonne.principal_id
+
+  key_permissions         = []
+  certificate_permissions = []
+  secret_permissions      = ["Get"]
+  storage_permissions     = []
+}
+
 resource "azurerm_storage_account" "key_storage" {
   name                     = "b1e3gr2kv"
   resource_group_name      = local.resource_group_name
@@ -45,7 +56,7 @@ resource "azurerm_storage_blob" "testsb" {
 }
 
 data "azurerm_key_vault_certificate" "app" {
-  name         = "b1e3-gr2-cert"
+  name         = "wiki-js"
   key_vault_id = azurerm_key_vault.coffre_fort.id
   depends_on   = [null_resource.ssl_cert]
 }
