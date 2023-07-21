@@ -23,68 +23,8 @@ resource "azurerm_key_vault_access_policy" "ssl" {
   storage_permissions     = []
 }
 
-# resource "azurerm_key_vault_certificate" "cert" {
-#   name         = "wikijs"
-#   key_vault_id = azurerm_key_vault.coffre_fort.id
-
-#   certificate_policy {
-#     issuer_parameters {
-#       name = "Self"
-#     }
-
-#     key_properties {
-#       exportable = true
-#       key_size   = 2048
-#       key_type   = "RSA"
-#       reuse_key  = true
-#     }
-
-#     lifetime_action {
-#       action {
-#         action_type = "AutoRenew"
-#       }
-
-#       trigger {
-#         days_before_expiry = 6
-#       }
-#     }
-
-#     secret_properties {
-#       content_type = "application/x-pkcs12"
-#     }
-
-#     x509_certificate_properties {
-#       # Server Authentication = 1.3.6.1.5.5.7.3.1
-#       # Client Authentication = 1.3.6.1.5.5.7.3.2
-#       extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
-
-#       key_usage = [
-#         "cRLSign",
-#         "dataEncipherment",
-#         "digitalSignature",
-#         "keyAgreement",
-#         "keyCertSign",
-#         "keyEncipherment",
-#       ]
-
-#       # subject_alternative_names {
-#       #   dns_names = ["${azurerm_public_ip.Public_IP_Appli.fqdn}"]
-#       # }
-
-#       subject            = "CN=http://b1e3-gr2-wikijs.westeurope.cloudapp.azure.com"
-#       validity_in_months = 3
-#     }
-#   }
-# }
-
-# resource "azurerm_key_vault_secret" "example" {
-#   name         = "secret-sauce"
-#   value        = "szechuan"
-#   key_vault_id = azurerm_key_vault.coffre_fort.id
-# }
-
 resource "azurerm_storage_account" "key_storage" {
-  name                     = "b1e3gr2keyvaultstorage"
+  name                     = "b1e3gr2kv"
   resource_group_name      = local.resource_group_name
   location                 = local.location
   account_tier             = "Standard"
@@ -92,7 +32,7 @@ resource "azurerm_storage_account" "key_storage" {
 }
 
 resource "azurerm_storage_container" "container" {
-  name                  = "container"
+  name                  = "acme"
   storage_account_name  = azurerm_storage_account.key_storage.name
   container_access_type = "blob"
 }
@@ -103,3 +43,15 @@ resource "azurerm_storage_blob" "testsb" {
   storage_container_name = azurerm_storage_container.container.name
   type                   = "Append"
 }
+
+data "azurerm_key_vault_certificate" "app" {
+  name         = "b1e3-gr2-cert"
+  key_vault_id = azurerm_key_vault.coffre_fort.id
+  depends_on   = [null_resource.ssl_cert]
+}
+
+# resource "azurerm_key_vault_secret" "example" {
+#   name         = "secret-sauce"
+#   value        = "szechuan"
+#   key_vault_id = azurerm_key_vault.coffre_fort.id
+# }

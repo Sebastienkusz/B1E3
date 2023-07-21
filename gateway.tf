@@ -36,10 +36,10 @@ resource "azurerm_application_gateway" "main" {
     port = 80
   }
 
-  # frontend_port {
-  #   name = local.frontend_port_name_https
-  #   port = 443
-  # }
+  frontend_port {
+    name = local.frontend_port_name_https
+    port = 443
+  }
 
   # HTTP
   http_listener {
@@ -49,19 +49,19 @@ resource "azurerm_application_gateway" "main" {
     protocol                       = "Http"
   }
 
-  # # HTTPS
-  # http_listener {
-  #   name                           = local.listener_name_https
-  #   frontend_ip_configuration_name = local.frontend_ip_configuration_name
-  #   frontend_port_name             = local.frontend_port_name_https
-  #   protocol                       = "Https"
-  #   ssl_certificate_name           = "ssl_cert"
-  # }
+  # HTTPS
+  http_listener {
+    name                           = local.listener_name_https
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name
+    frontend_port_name             = local.frontend_port_name_https
+    protocol                       = "Https"
+    ssl_certificate_name           = "ssl_cert"
+  }
 
-  # ssl_certificate {
-  #   name                = "ssl_cert"
-  #   key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
-  # }
+  ssl_certificate {
+    name                = "ssl_cert"
+    key_vault_secret_id = data.azurerm_key_vault_certificate.app.secret_id
+  }
 
   backend_address_pool {
     name         = local.backend_address_pool_name
@@ -109,16 +109,16 @@ resource "azurerm_application_gateway" "main" {
     }
   }
 
-  # # HTTPS rule
-  # request_routing_rule {
-  #   name                        = "routing_https"
-  #   rule_type                   = "Basic"
-  #   http_listener_name          = local.listener_name_https
-  #   redirect_configuration_name = local.redirect_configuration_name
-  #   priority                    = 2
-  #   # backend_address_pool_name   = local.backend_address_pool_name
-  #   # backend_http_settings_name  = local.http_setting_name
-  # }
+  # HTTPS rule
+  request_routing_rule {
+    name                        = "routing_https"
+    rule_type                   = "Basic"
+    http_listener_name          = local.listener_name_https
+    redirect_configuration_name = local.redirect_configuration_name
+    priority                    = 2
+    # backend_address_pool_name   = local.backend_address_pool_name
+    # backend_http_settings_name  = local.http_setting_name
+  }
 
   redirect_configuration {
     name                 = local.redirect_configuration_name

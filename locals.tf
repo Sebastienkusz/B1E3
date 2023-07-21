@@ -71,7 +71,7 @@ locals {
   mariadb_user_password    = random_password.user_mariadb.result
   mariadb_private_dns_zone = "privatelink.mariadb.database.azure.com"
   mariadb_private_dns_link = "dnsvnetlink"
-  mariadb_private_endpoint = "pep"
+  mariadb_private_endpoint = "pep" #"${local.resource_group_name}-pep"
 }
 
 # Storage account
