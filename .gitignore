@@ -9,6 +9,10 @@
 # invetaire d'ansible
 inventaire.ini
 
+# Certificates
+cert.pfx
+certbot
+
 # others files
 *.save
 

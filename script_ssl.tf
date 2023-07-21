@@ -1,5 +1,5 @@
 locals {
-  scripts_path                 = "${path.module}/.scripts/"
+  scripts_path                 = "${path.module}/scripts/"
   ssl_cert_auth_script_name    = "auth-host.sh"
   ssl_cert_cleanup_script_name = "cleanup-host.sh"
   ssl_cert_script_name         = "ssl-cert.sh"
