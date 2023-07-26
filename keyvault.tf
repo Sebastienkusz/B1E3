@@ -1,7 +1,7 @@
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "coffre_fort" {
-  name                        = "b1e3gr2vault2"
+  name                        = local.key_vault_name
   location                    = local.location
   resource_group_name         = local.resource_group_name
   enabled_for_disk_encryption = true
@@ -35,7 +35,7 @@ resource "azurerm_key_vault_access_policy" "tls" {
 }
 
 resource "azurerm_storage_account" "key_storage" {
-  name                     = "b1e3gr2kv"
+  name                     = local.key_vault_storage
   resource_group_name      = local.resource_group_name
   location                 = local.location
   account_tier             = "Standard"
@@ -56,7 +56,7 @@ resource "azurerm_storage_blob" "testsb" {
 }
 
 data "azurerm_key_vault_certificate" "app" {
-  name         = "wiki-js"
+  name         = local.appli_name
   key_vault_id = azurerm_key_vault.coffre_fort.id
   depends_on   = [null_resource.ssl_cert]
 }
