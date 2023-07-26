@@ -71,12 +71,12 @@ locals {
   mariadb_user_password    = random_password.user_mariadb.result
   mariadb_private_dns_zone = "privatelink.mariadb.database.azure.com"
   mariadb_private_dns_link = "dnsvnetlink"
-  mariadb_private_endpoint = "pep" #"${local.resource_group_name}-pep"
+  mariadb_private_endpoint = "pep"
 }
 
 # Storage account
 locals {
-  storage_recovery_services_vault = "recoveryservicesvault"
+  storage_recovery_services_vault = "b1e3gr2recoveryservicesvault"
   storage_account_name            = "b1e3gr2wikistorage"
   share_directory_name            = "wikispace"
   share_name                      = "wikishare"
@@ -98,6 +98,12 @@ locals {
   listener_name_https                  = "${local.resource_group_name}-httpslstn"
   frontend_ip_configuration_name_https = "${local.resource_group_name}-feiphttps"
   ssl_certificate_name                 = "${local.resource_group_name}-cert"
+}
+
+# Key Vault
+locals {
+  key_vault_name = "b1e3gr2keyvault"
+  key_vault_storage = "b1e3gr2kv"
 }
 
 # Scale set

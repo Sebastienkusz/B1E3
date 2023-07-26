@@ -60,7 +60,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnetlink" {
 
 #Create endpoint
 resource "azurerm_private_endpoint" "pep" {
-  name                = local.mariadb_private_endpoint
+  name                = "${local.resource_group_name}-${local.mariadb_private_endpoint}"
   location            = local.location
   resource_group_name = local.resource_group_name
   subnet_id           = azurerm_subnet.Subnet["sr2"].id
