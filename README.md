@@ -2,6 +2,7 @@
 
 ### 1- Lancement de Terraform
 
+    terraform plan
     terraform apply
 
 Si **terraform** est déjà déployé par un collègue, il faut lancer un **terraform apply** pour générer certains fichiers :
