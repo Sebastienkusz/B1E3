@@ -1,5 +1,3 @@
-
-
 resource "azurerm_mariadb_server" "serverdb" {
   name                             = "${local.resource_group_name}-${local.server_name}"
   location                         = local.location

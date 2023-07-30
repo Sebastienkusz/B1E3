@@ -37,10 +37,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "scale" {
     sku       = "22_04-lts-gen2"
     version   = "latest"
   }
-
-  # lifecycle {
-  #   ignore_changes = ["instances"]
-  # }
 }
 
 # action plan 11. Auto-scaling
@@ -69,11 +65,6 @@ resource "azurerm_monitor_autoscale_setting" "autoscale" {
         time_aggregation   = "Average"
         operator           = "GreaterThan"
         threshold          = 90
-        # metric_namespace   = "microsoft.compute/virtualmachinescalesets"
-        # dimensions {
-        #   name     = "AppName"
-        #   operator = "Equals"
-        #   values   = ["App1"]
       }
 
       scale_action {
@@ -102,11 +93,6 @@ resource "azurerm_monitor_autoscale_setting" "autoscale" {
         value     = "1"
         cooldown  = "PT1M"
       }
-
-      #   predictive {
-      #     scale_mode = "Enabled"
-      #     #look_ahead_time = "PT5M"
-      #   }
     }
   }
 }
