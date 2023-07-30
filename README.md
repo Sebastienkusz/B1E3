@@ -2,6 +2,9 @@
 
 ### 1- Lancement de Terraform
 
+    terraform plan
+    terraform apply
+
 Si **terraform** est déjà déployé par un collègue, il faut lancer un **terraform apply** pour générer certains fichiers :
 
     terraform apply -target local_file.inventaire -target local_file.script_ssh_config -target local_file.admin_rsa_file -target local_file.update_gitignore -target local_file.appli_commun_main_yml -target local_file.storage_main_yml
