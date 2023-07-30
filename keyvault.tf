@@ -60,9 +60,3 @@ data "azurerm_key_vault_certificate" "app" {
   key_vault_id = azurerm_key_vault.coffre_fort.id
   depends_on   = [null_resource.ssl_cert]
 }
-
-# resource "azurerm_key_vault_secret" "example" {
-#   name         = "secret-sauce"
-#   value        = "szechuan"
-#   key_vault_id = azurerm_key_vault.coffre_fort.id
-# }
