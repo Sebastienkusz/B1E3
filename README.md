@@ -36,7 +36,7 @@ Pour cela, il suffit de lancer la commande suivante :
 "f" étant le nom de fichier de la clé ssh privée correspondant à la clé se trouvant dans le dossier ssh_keys
 
 ## Warning
-Après la création du certificat, penser à relancer un **terraform apply** sans oublier de décommenter les lignes suivantes : 
+Après la création du certificat, penser à relancer un **terraform apply** sans oublier de décommenter les lignes suivantes: 
    
 >lignes **52 à 64** et lignes **111 à 120** du fichier **gateway.tf**
 
