@@ -72,21 +72,24 @@ Quand **Ansible** est installé, on lance les playbooks pour les configurations 
 ------------------
 ## Liste des ressources
 - 1 **clé ssh** créé aléatoirement + Clés admins supplémentaires (Johann et Seb) 
-- 1 **réseau virtuel** (b1e3-gr2-vnet)
-- 3 **sous-réseaux** (b1e3-gr2-sr1 /sr2) (b1e3-gr2-gw)
-- 3 **groupe de sécurité** (b1e3-gr2-nsg1/2/3) + **carte réseau** + **disques associés** 
-- 1 **VM Linux** (Applicative) (b1e3-gr2-appli) 
-- 1 **VM Linux** (Bastion) accés SSH (b1e3-gr2-bastion) 
-- 1 **Azure Database** (MariaDB) (b1e3-gr2-bdd)
-- 1 **server mariadb** (b1e3-gr2-mariadbserver)
-- 1 **Azure DNS** (b1e3-gr2-dns) 
-- 1 **compte de stockage** (disque de 5 go) (b1e3-gr2-storage) 
-- 1 **passerelle d'application** (b1e3-gr2-appgateway)
-- 1 **Azure Key Vault** (b1e3-gr2-keyvault) 
-- 1 **conteneur** de stockage blob 
-- 1 **Azure monitor** (b1e3-gr2-monitor) 
-- 1 **Log analytics** (b1e3-gr2-log)
- -------------------- 
+- 1 **réseau virtuel** 			           (b1e3-gr2-vnet) 
+- 1 **sous-réseau**				           (b1e3-gr2-sr1) 
+- 1 **sous-réseau**				           (b1e3-sr2-sr2) 
+- 1 **sous-réseau**				           (b1e3-gr2-gw) 
+- 3 **NSG** 					           (b1e3-gr2-nsg-bastion/ "-”-"-mariadb / “-”-”- wiki-js)
+- 1 **VM Linux (Applicative)** 		       (b1e3-gr2-appli) 
+- 1 **VM Linux (Bastion)** 			       (b1e3-gr2-bastion) 
+- 1 **Azure Database (MariaDB)** 		   (b1e3-gr2-mariadb) 
+- 1 **Azure DNS** 				           (privatelink.mariadb.database.azure.com) 
+- 1 **compte de stockage (5 go)** 		   (b1e3-gr2-wikistorage)   
+- 1 **compte de stockage** 		           (b1e3gr2kv) 
+- 1 **Load balancer (gateway)**		       (b1e3-gr2-gateway) 
+- 1 **Azure Key Vault** 			       (b1e3-gr2-keyvault)		 
+- 1 **Espace de travail Log analytics**    (b1e3-gr2-vm-wiki-js-workspace) 
+- 1 **Classeur Azure**			           (b1e3-gr2-workbook) 
+- 1 **groupe de machines identiques**	   (b1e3-gr2-scale) 
+- 1 **Coffre Recovery Services**		   (b1e3gr2recoveryservicesvault)
+-------------------- 
 ## Topologie
 ![shéma](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/e75dc5e9-5e7f-4e14-a23c-a8b9fa4d5a53)
 
