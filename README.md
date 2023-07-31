@@ -8,7 +8,7 @@ Avant de lancer Terraform, penser à commenter les lignes **52 à 64** et **111 
 Si **terraform** est déjà déployé par un collègue, il faut lancer un **terraform apply** pour générer certains fichiers :
 
     terraform apply -target local_file.inventaire -target local_file.script_ssh_config -target local_file.admin_rsa_file -target local_file.update_gitignore -target local_file.appli_commun_main_yml -target local_file.storage_main_yml
-
+---------------------
 ### 2- Lancement des scripts
 
 Ensuite, on se place dans le dossier scripts
@@ -41,7 +41,7 @@ Après la création du certificat, penser à relancer un **terraform apply** san
 >lignes **52 à 64** et lignes **111 à 120** du fichier **gateway.tf**
 
 >ligne **95** du fichier **script_ssl.tf**
-    
+-------------------------------  
 ### 3- Lancement d'Ansible 
 Dans un premier temps, il faut se déplacer dans le dossier **ansible** avant de lancer les commandes ci-dessous
 >cd ansible
@@ -49,7 +49,7 @@ Dans un premier temps, il faut se déplacer dans le dossier **ansible** avant de
 Se placer dans un environnement virtuel pour installer **Ansible** et tous les modules si nécessaire
 
     virtualenv b1e3
-_________
+
     source b1e3/bin/activate
 
   #### *Si Ansible n'est pas installé :*
