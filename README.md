@@ -1,5 +1,5 @@
 # b1e3-gr2
-
+--------------------
 ### 1- Lancement de Terraform
 Avant de lancer Terraform, penser à commenter les lignes **52 à 64** et **111 à 120** dans **gateway.tf** et la ligne **95** dans **script_ssl.tf**.
     
@@ -69,7 +69,7 @@ Quand **Ansible** est installé, on lance les playbooks pour les configurations 
 
     ansible-playbook install-appli.yml -i inventaire.ini
 
-
+------------------
 ## Liste des ressources
 - 1 **clé ssh** créé aléatoirement + Clés admins supplémentaires (Johann et Seb) 
 - 1 **réseau virtuel** (b1e3-gr2-vnet)
@@ -86,7 +86,7 @@ Quand **Ansible** est installé, on lance les playbooks pour les configurations 
 - 1 **conteneur** de stockage blob 
 - 1 **Azure monitor** (b1e3-gr2-monitor) 
 - 1 **Log analytics** (b1e3-gr2-log)
-  
+ -------------------- 
 ## Topologie
 ![shéma](https://github.com/Simplon-AdminCloud-Bordeaux-2023-2025/b1e3-gr2/assets/132474933/e75dc5e9-5e7f-4e14-a23c-a8b9fa4d5a53)
 
