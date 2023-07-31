@@ -1,8 +1,8 @@
 # b1e3-gr2
 
 ### 1- Lancement de Terraform
-
-    terraform plan
+Avant de lancer Terraform, penser à commenter les lignes **52 à 64** et **111 à 120** dans **gateway.tf** et la ligne **95** dans **script_ssl.tf**.
+    
     terraform apply
 
 Si **terraform** est déjà déployé par un collègue, il faut lancer un **terraform apply** pour générer certains fichiers :
@@ -35,8 +35,15 @@ Pour cela, il suffit de lancer la commande suivante :
 
 "f" étant le nom de fichier de la clé ssh privée correspondant à la clé se trouvant dans le dossier ssh_keys
 
+## Warning
+Après la création du certificat, penser à relancer un **terraform apply** sans oublier de décommenter les lignes suivantes : 
+   
+>lignes **52 à 64** et lignes **111 à 120** du fichier **gateway.tf**
+
+>ligne **95** du fichier **script_ssl.tf**
+    
 ### 3- Lancement d'Ansible 
-dans un premier temps, il faut se déplacer dans le dossier **ansible** avant de lancer les commandes ci-dessous
+Dans un premier temps, il faut se déplacer dans le dossier **ansible** avant de lancer les commandes ci-dessous
 >cd ansible
 
 Se placer dans un environnement virtuel pour installer **Ansible** et tous les modules si nécessaire
